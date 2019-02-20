@@ -1,18 +1,16 @@
 'use strict'
 
-const Manufacturers = use('App/Models/Manufacturer')
-
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /**
- * Resourceful controller for interacting with manufacturers
+ * Resourceful controller for interacting with orders
  */
-class ManufacturerController {
+class OrderController {
   /**
-   * Show a list of all manufacturers.
-   * GET manufacturers
+   * Show a list of all orders.
+   * GET orders
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -20,12 +18,11 @@ class ManufacturerController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let maufacturers = await Manufacturers.all()
   }
 
   /**
-   * Render a form to be used for creating a new manufacturer.
-   * GET manufacturers/create
+   * Render a form to be used for creating a new order.
+   * GET orders/create
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -36,23 +33,19 @@ class ManufacturerController {
   }
 
   /**
-   * Create/save a new manufacturer.
-   * POST manufacturers
+   * Create/save a new order.
+   * POST orders
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const name = request.input.name
-    const name = request.input.name
-    const name = request.input.name
-    const name = request.input.name
   }
 
   /**
-   * Display a single manufacturer.
-   * GET manufacturers/:id
+   * Display a single order.
+   * GET orders/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -63,8 +56,8 @@ class ManufacturerController {
   }
 
   /**
-   * Render a form to update an existing manufacturer.
-   * GET manufacturers/:id/edit
+   * Render a form to update an existing order.
+   * GET orders/:id/edit
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -75,8 +68,8 @@ class ManufacturerController {
   }
 
   /**
-   * Update manufacturer details.
-   * PUT or PATCH manufacturers/:id
+   * Update order details.
+   * PUT or PATCH orders/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -86,8 +79,8 @@ class ManufacturerController {
   }
 
   /**
-   * Delete a manufacturer with id.
-   * DELETE manufacturers/:id
+   * Delete a order with id.
+   * DELETE orders/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -97,4 +90,4 @@ class ManufacturerController {
   }
 }
 
-module.exports = ManufacturerController
+module.exports = OrderController

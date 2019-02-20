@@ -18,7 +18,7 @@ class BranchController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let branches = await Branches.query().with('business').fetch()
+    let branches = await Branches.all()
     return response.json(branches)
   }
 
@@ -120,7 +120,7 @@ class BranchController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    await branch.find(params.id).delete()
+    await Branch.find(params.id).delete()
     return response.json({message: "Succesfully deleted!"})
   }
 }

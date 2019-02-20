@@ -17,7 +17,7 @@ class ProductsSchema extends Schema {
       table.real('sellingPrice')
       table.string('variants')
       table.integer('quantity')
-      table.text('manufacturer_id').unsigned().references('id').inTable('manufacturers')
+      table.integer('manufacturer_id').unsigned().references('id').inTable('manufacturers')
       table.timestamps()
     })
   }

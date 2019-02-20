@@ -1,18 +1,18 @@
 'use strict'
 
-const Business = use('App/Models/Business')
+const Customers = use('App/Models/Customer')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /**
- * Resourceful controller for interacting with businesses
+ * Resourceful controller for interacting with customers
  */
-class BusinessController {
+class CustomerController {
   /**
-   * Show a list of all businesses.
-   * GET businesses
+   * Show a list of all customers.
+   * GET customers
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -20,13 +20,13 @@ class BusinessController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let businesses = await Business.query().with('user').fetch()
-    response.json(businesses)
+    let customers = await Customers.all()
+    response.json(customers)
   }
 
   /**
-   * Render a form to be used for creating a new business.
-   * GET businesses/create
+   * Render a form to be used for creating a new customer.
+   * GET customers/create
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -37,8 +37,8 @@ class BusinessController {
   }
 
   /**
-   * Create/save a new business.
-   * POST businesses
+   * Create/save a new customer.
+   * POST customers
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -46,25 +46,23 @@ class BusinessController {
    */
   async store ({ request, response }) {
     const name = request.input.name
-    const email = request.input.email
+    const address = request.input.adress
     const tel = request.input.tel
-    const logo = request.input.logo
-    const address = request.input.address
+    const email = request.input.email
 
-    const business = new Business()
-    business.name = name
-    business.email = email
-    business.tel = tel
-    business.logo = logo
-    business.address = address
+    let customer = new Customers()
 
-    await business.save()
-    return response.json(business)
+    customer.name = name
+    customer.address = address
+    customer.tel = tel
+    customer.email = email
+
+    response.json(customer)
   }
 
   /**
-   * Display a single business.
-   * GET businesses/:id
+   * Display a single customer.
+   * GET customers/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -72,13 +70,13 @@ class BusinessController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    const business = await Business.find(params.id)
-    response.json(business)
+    let customer = await Customers.find(params.id)
+    response.json(customer)
   }
 
   /**
-   * Render a form to update an existing business.
-   * GET businesses/:id/edit
+   * Render a form to update an existing customer.
+   * GET customers/:id/edit
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -89,8 +87,8 @@ class BusinessController {
   }
 
   /**
-   * Update business details.
-   * PUT or PATCH businesses/:id
+   * Update customer details.
+   * PUT or PATCH customers/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -98,35 +96,33 @@ class BusinessController {
    */
   async update ({ params, request, response }) {
     const name = request.input.name
-    const email = request.input.email
+    const address = request.input.adress
     const tel = request.input.tel
-    const logo = request.input.logo
-    const address = request.input.address
+    const email = request.input.email
 
-    const business = await Business.find(params.id)
+    let customer = Customers.find(params.id)
 
-    business.name = name
-    business.email = email
-    business.tel = tel
-    business.logo = logo
-    business.address = address
+    customer.name = name
+    customer.address = address
+    customer.tel = tel
+    customer.email = email
 
-    await business.save()
-    return response.json(business)
+    await customer.save()
+    response.json(customer)
   }
 
   /**
-   * Delete a business with id.
-   * DELETE businesses/:id
+   * Delete a customer with id.
+   * DELETE customers/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    await Branch.find(params.id).delete()
-    return response.json({message:'Deleted succesfully'})
+    await Customers.find(params.id).delete()
+    response.json({message:"Customer deleted succesfully!"})
   }
 }
 
-module.exports = BusinessController
+module.exports = CustomerController

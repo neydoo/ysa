@@ -5,7 +5,7 @@ const Model = use('Model')
 
 class Product extends Model {
     manufacturer(){
-        return this.belongsTo('App/Models/Manufacturer')
+        return this.hasMany('App/Models/Manufacturer')
     }
 }
 

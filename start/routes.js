@@ -17,3 +17,12 @@
 const Route = use('Route')
 
 Route.on('/').render('welcome')
+Route
+  .group(() => {
+    Route.get('/', 'BranchController.index')
+    Route.post('/', 'BranchController.store')
+    Route.get('/:id', 'BranchController.show')
+    Route.put('/:id', 'BranchController.update')
+    Route.delete('/:id', 'BranchController.destroy')
+  })
+  .prefix('branch')
