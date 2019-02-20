@@ -69,7 +69,7 @@ class BranchController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    let branch = await Branch.find(params.id)
+    let branch = await Branch.find(params.id).query().with('staff').fetch()
 
     response.json(branch)
   }

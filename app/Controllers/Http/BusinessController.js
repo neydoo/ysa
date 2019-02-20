@@ -72,7 +72,7 @@ class BusinessController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    const business = await Business.find(params.id)
+    const business = await Business.find(params.id).query().with('branches').fetch()
     response.json(business)
   }
 

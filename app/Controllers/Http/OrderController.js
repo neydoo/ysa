@@ -1,5 +1,7 @@
 'use strict'
 
+const Orders = use('App/Models/Order')
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -18,6 +20,9 @@ class OrderController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    let page = 1
+    let orders = await Orders.query().paginate(page)
+    return response.json(orders.toJSON())
   }
 
   /**
@@ -41,6 +46,7 @@ class OrderController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const nam
   }
 
   /**

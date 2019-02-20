@@ -57,6 +57,7 @@ class CustomerController {
     customer.tel = tel
     customer.email = email
 
+    await customer.save()
     response.json(customer)
   }
 
@@ -70,7 +71,7 @@ class CustomerController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    let customer = await Customers.find(params.id)
+    let customer = await Customers.find(params.id).query().with('orders').fetch()
     response.json(customer)
   }
 
