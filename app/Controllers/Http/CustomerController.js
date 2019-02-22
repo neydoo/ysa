@@ -122,7 +122,7 @@ class CustomerController {
    */
   async destroy ({ params, request, response }) {
     await Customers.find(params.id).delete()
-    response.json({message:"Customer deleted succesfully!"})
+    response.json({"message":"Customer deleted succesfully!"})
   }
 }
 

@@ -1,5 +1,7 @@
 'use strict'
 
+const Products = use('App/Models/Product')
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -18,6 +20,8 @@ class ProductController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const products = await Products.all()
+    return response.json(products)
   }
 
   /**
@@ -41,6 +45,32 @@ class ProductController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const name = request.input.name
+    const batch = request.input.batch
+    const productType = request.input.productType
+    const description = request.input.description
+    const otherDesc = request.input.otherDesc
+    const barcode = request.input.barcode
+    const costPrice = request.input.costPrice
+    const sellingPrice = request.input.sellingPrice
+    const quantity = request.input.quantity
+    const variants = request.input.variants
+
+    const product = new Products()
+
+    product.name = name
+    product.batch = batch
+    product.productType = productType
+    product.description = description
+    product.otherDesc = otherDesc
+    product.barcode = barcode
+    product.costPrice = costPrice
+    product.sellingPrice = sellingPrice
+    product.quantity = quantity
+    product.variants = variants
+
+    await product.save()
+    return response.json(product) 
   }
 
   /**
@@ -53,6 +83,8 @@ class ProductController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const product = Poduct.find(params.id)
+    return response.json(product)
   }
 
   /**
@@ -76,6 +108,32 @@ class ProductController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const name = request.input.name
+    const batch = request.input.batch
+    const productType = request.input.productType
+    const description = request.input.description
+    const otherDesc = request.input.otherDesc
+    const barcode = request.input.barcode
+    const costPrice = request.input.costPrice
+    const sellingPrice = request.input.sellingPrice
+    const quantity = request.input.quantity
+    const variants = request.input.variants
+
+    const product = Products.find(params.id)
+
+    product.name = name
+    product.batch = batch
+    product.productType = productType
+    product.description = description
+    product.otherDesc = otherDesc
+    product.barcode = barcode
+    product.costPrice = costPrice
+    product.sellingPrice = sellingPrice
+    product.quantity = quantity
+    product.variants = variants
+
+    await product.save()
+    return response.json(product)  
   }
 
   /**
@@ -87,6 +145,8 @@ class ProductController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    await ProductController.find(params.id).delete()
+    return response.json({"message":"succesfully deleted!"})
   }
 }
 

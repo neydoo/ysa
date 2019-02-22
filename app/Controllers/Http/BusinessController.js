@@ -125,7 +125,7 @@ class BusinessController {
    */
   async destroy ({ params, request, response }) {
     await Branch.find(params.id).delete()
-    return response.json({message:'Deleted succesfully'})
+    return response.json({"message":'Deleted succesfully'})
   }
 }
 

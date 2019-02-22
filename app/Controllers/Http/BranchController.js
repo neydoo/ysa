@@ -121,7 +121,7 @@ class BranchController {
    */
   async destroy ({ params, request, response }) {
     await Branch.find(params.id).delete()
-    return response.json({message: "Succesfully deleted!"})
+    return response.json({"message": "Succesfully deleted!"})
   }
 }
 

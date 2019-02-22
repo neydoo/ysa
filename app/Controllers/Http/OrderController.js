@@ -22,7 +22,7 @@ class OrderController {
   async index ({ request, response, view }) {
     let page = 1
     let orders = await Orders.query().paginate(page)
-    return response.json(orders.toJSON())
+    return response.json(orders)
   }
 
   /**
@@ -46,7 +46,19 @@ class OrderController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const nam
+    const orderitemId = request.body.orderitem_id
+    const branchId = request.body.branch_id
+    const total = request.body.total
+
+    const order = new Orders() 
+
+    order.order_id = orderitemId
+    order.branch_id = branchId
+    order.total = total
+
+    await order.save()
+    return response.json(order)
+
   }
 
   /**
@@ -59,6 +71,8 @@ class OrderController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const order = await Orders.find(params.id).query().with('orderitems').fetch()
+    response.json(order)
   }
 
   /**
@@ -82,6 +96,9 @@ class OrderController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const order = await Orders.find(params.id)
+
+    order.total = request.body.total
   }
 
   /**

@@ -1,5 +1,7 @@
 'use strict'
 
+const OrderItem = use('App/Models/Orderitem')
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -41,6 +43,15 @@ class OrderitemController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const orderitem = JSON.stringify(request.body.orderitem)
+
+    const order_item = new OrderItem()
+
+    order_item.orderitems = orderitem
+
+    await order_item.save()
+    return response.json(order_item)
+
   }
 
   /**
@@ -76,6 +87,14 @@ class OrderitemController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const data = await OrderItems.find(params.id)
+    const orderitem = JSON.parse(data)
+
+    orderitem.orderitems = request.body.orderitem
+    order_item = JSON.stringify(orderitem)
+    await order_item.save()
+
+    return response.json(order_item)
   }
 
   /**

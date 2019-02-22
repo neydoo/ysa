@@ -127,7 +127,7 @@ class ManufacturerController {
    */
   async destroy ({ params, request, response }) {
     await Manufacturers.find(params.id).delete()
-    return response.json({message:"successfully deleted!"})
+    return response.json({"message":"successfully deleted!"})
   }
 }
 

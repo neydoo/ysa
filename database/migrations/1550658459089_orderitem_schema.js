@@ -7,7 +7,7 @@ class OrderitemSchema extends Schema {
   up () {
     this.create('orderitems', (table) => {
       table.increments()
-      table.integer('product_id').unsigned().references('id').inTable('products')
+      table.string('orderitems')
       table.timestamps()
     })
   }
