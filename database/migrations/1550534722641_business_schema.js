@@ -7,10 +7,10 @@ class BusinessSchema extends Schema {
   up () {
     this.create('businesses', (table) => {
       table.increments()
-      table.text('name')
+      table.text('name').notNullable().unique()
       table.text('address')
-      table.text('tel')
-      table.text('email')
+      table.text('tel').notNullable().unique()
+      table.text('email').notNullable().unique()
       table.blob('logo')
       table.integer('branch_id').unsigned().references('id').inTable('branches')
       table.timestamps()

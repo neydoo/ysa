@@ -15,8 +15,8 @@ class StaffSchema extends Schema {
       table.string('LGA')
       table.string('sex')
       table.string('NOK')
-      table.string('tel')
-      table.string('email')
+      table.string('tel').notNullable().unique()
+      table.string('email').notNullable().unique()
       table.timestamps()
     })
   }

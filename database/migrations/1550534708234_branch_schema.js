@@ -8,8 +8,8 @@ class BranchSchema extends Schema {
     this.create('branches', (table) => {
       table.increments()
       table.text('address')
-      table.text('tel')
-      table.text('email')
+      table.text('tel').notNullable().unique()
+      table.text('email').notNullable().unique()
       table.integer('staff_id').unsigned().references('id').inTable('staff')
     })
   }

@@ -55,6 +55,7 @@ class ProductController {
     const sellingPrice = request.input.sellingPrice
     const quantity = request.input.quantity
     const variants = request.input.variants
+    const expDate = request.input.expDate
 
     const product = new Products()
 
@@ -68,6 +69,7 @@ class ProductController {
     product.sellingPrice = sellingPrice
     product.quantity = quantity
     product.variants = variants
+    product.expDate = expDate
 
     await product.save()
     return response.json(product) 
@@ -117,6 +119,7 @@ class ProductController {
     const costPrice = request.input.costPrice
     const sellingPrice = request.input.sellingPrice
     const quantity = request.input.quantity
+    const expDate = request.input.expDate
     const variants = request.input.variants
 
     const product = Products.find(params.id)
@@ -131,6 +134,7 @@ class ProductController {
     product.sellingPrice = sellingPrice
     product.quantity = quantity
     product.variants = variants
+    product.expDate = expDate
 
     await product.save()
     return response.json(product)  
