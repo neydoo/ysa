@@ -126,7 +126,8 @@ class ManufacturerController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    await Manufacturers.find(params.id).delete()
+    const manufacturer = await Manufacturers.find(params.id)
+    await manufacturer.delete()
     return response.json({"message":"successfully deleted!"})
   }
 }

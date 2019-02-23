@@ -43,17 +43,17 @@ class BranchController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const name = request.input.name
-    const address = request.input.address
-    const tel = request.input.tel
-    const email = request.input.email
+    const address = request.body.address
+    const tel = request.body.tel
+    const email = request.body.email
+    // const staff_id = request.body.staff_id
 
-    const branch = new Branch()
+    const branch = new Branches()
 
-    branch.name = name
     branch.address = address
     branch.tel = tel
     branch.email = email
+    // branch.staff_id = staff_id
 
     await branch.save()
     return response.json(branch)
@@ -69,7 +69,11 @@ class BranchController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    let branch = await Branch.find(params.id).query().with('staff').fetch()
+    // let branch = await Branches.find(params.id)
+    let branch = await Branches.query()
+    .where('id','=',params.id)
+    .with('staff')
+    .fetch()
 
     response.json(branch)
   }
@@ -95,14 +99,12 @@ class BranchController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
-    const name = request.input.name
-    const address = request.input.address
-    const tel = request.input.tel
-    const email = request.input.email
+    const address = request.body.address
+    const tel = request.body.tel
+    const email = request.body.email
 
-    const branch = await Branch.find(params.id)
-
-    branch.name = name
+    const branch = await Branches.find(params.id)
+    
     branch.address = address
     branch.tel = tel
     branch.email = email
@@ -120,7 +122,8 @@ class BranchController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    await Branch.find(params.id).delete()
+    const branch = await Branches.find(params.id)
+    await branch.delete()
     return response.json({"message": "Succesfully deleted!"})
   }
 }

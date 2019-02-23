@@ -26,3 +26,66 @@ Route
     Route.delete('/:id', 'BranchController.destroy')
   })
   .prefix('branch')
+Route
+  .group(() => {
+    Route.get('/', 'CustomerController.index')
+    Route.post('/', 'CustomerController.store')
+    Route.get('/:id', 'CustomerController.show')
+    Route.put('/:id', 'CustomerController.update')
+    Route.delete('/:id', 'CustomerController.destroy')
+  })
+  .prefix('customer')
+Route
+  .group(() => {
+    Route.get('/', 'ProductController.index')
+    Route.post('/', 'ProductController.store')
+    Route.get('/:id', 'ProductController.show')
+    Route.put('/:id', 'ProductController.update')
+    Route.delete('/:id', 'ProductController.destroy')
+  })
+  .prefix('product')
+Route
+  .group(() => {
+    Route.get('/', 'OrderController.index')
+    Route.post('/', 'OrderController.store')
+    Route.get('/:id', 'OrderController.show')
+    Route.put('/:id', 'OrderController.update')
+    Route.delete('/:id', 'OrderController.destroy')
+  })
+  .prefix('order')
+Route
+  .group(() => {
+    Route.get('/', 'BusinessController.index')
+    Route.post('/', 'BusinessController.store')
+    Route.get('/:id', 'BusinessController.show')
+    Route.put('/:id', 'BusinessController.update')
+    Route.delete('/:id', 'BusinessController.destroy')
+  })
+  .prefix('business')
+Route
+  .group(() => {
+    Route.get('/', 'StaffController.index')
+    Route.post('/', 'StaffController.store')
+    Route.get('/:id', 'StaffController.show')
+    Route.put('/:id', 'StaffController.update')
+    Route.delete('/:id', 'StaffController.destroy')
+  })
+  .prefix('staff')
+Route
+  .group(() => {
+    Route.get('/', 'OrderitemController.index')
+    Route.post('/', 'OrderitemController.store')
+    Route.get('/:id', 'OrderitemController.show')
+    Route.put('/:id', 'OrderitemController.update')
+    Route.delete('/:id', 'OrderitemController.destroy')
+  })
+  .prefix('orderitem')
+Route
+  .group(() => {
+    Route.get('/', 'ManufacturerhController.index')
+    Route.post('/', 'ManufacturerController.store')
+    Route.get('/:id', 'ManufacturerController.show')
+    Route.put('/:id', 'ManufacturerController.update')
+    Route.delete('/:id', 'ManufacturerController.destroy')
+  })
+  .prefix('manufacturer')

@@ -124,7 +124,8 @@ class BusinessController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    await Branch.find(params.id).delete()
+    const business = await Business.find(params.id)
+    await branch.delete()
     return response.json({"message":'Deleted succesfully'})
   }
 }

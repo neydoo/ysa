@@ -8,8 +8,7 @@ class OrderSchema extends Schema {
     this.create('orders', (table) => {
       table.increments()
       table.integer('orderitem_id').unsigned().references('id').inTable('orderitems')
-      table.integer('branch_id').unsigned().references('id').inTable('branch')
-      total.real('total')
+      table.real('total').notNullable()
       table.timestamps()
     })
   }

@@ -11,6 +11,7 @@ class BranchSchema extends Schema {
       table.text('tel').notNullable().unique()
       table.text('email').notNullable().unique()
       table.integer('staff_id').unsigned().references('id').inTable('staff')
+      table.timestamps()
     })
   }
 

@@ -17,6 +17,7 @@ class StaffSchema extends Schema {
       table.string('NOK')
       table.string('tel').notNullable().unique()
       table.string('email').notNullable().unique()
+      table.integer('branch_id').unsigned().references('id').inTable('branches')
       table.timestamps()
     })
   }

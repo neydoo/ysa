@@ -7,6 +7,9 @@ class Branch extends Model {
     business(){
         return this.belongsTo('App/Models/Business')
     }
+    staff(){
+        return this.hasMany('App/Models/Staff')
+    }
 }
 
 module.exports = Branch
