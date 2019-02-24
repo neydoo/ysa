@@ -57,7 +57,7 @@ class AuthController {
                 let accessToken = await auth.generate(user)
 
                 let staff = await Staff.query()
-                .where('user.id','=',user.id)
+                .where('user.id','=',user.id).fetch()
                 return response.json({staff,user,accessToken})
             }
         } catch(e){
@@ -76,7 +76,7 @@ class AuthController {
             if( await User.findBy(email)){
                 let user = await User.findBy(email)
                 let staff = await Staff.query()
-                .where('user.id','=',user.id)
+                .where('user.id','=',user.id).fetch()
                 user.password_token = passwordToken
                 user.reset_password_expires = Date.now() + 7200000
                 await Mail.raw('',(message)=>{
@@ -109,7 +109,7 @@ class AuthController {
             let accessToken = await auth.generate(user)
 
             let staff = await Staff.query()
-            .where('user.id','=',user.id)
+            .where('user.id','=',user.id).fetch()
             return response.json({staff,user,accessToken})
         }
 
