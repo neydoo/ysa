@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reset Password</title>
+  {{ style('style') }}
+</head>
+<body>
+  <section>
+    <div class="logo"></div>
+    <div class="title"></div>
+
+    <h2>Hello {{staff.useername}}</h2>
+      <p>Looks like you forgot your Password.</p>
+      <p>Fret not, we are here to help. Just follow this link http://http://127.0.0.1:3333/reset_password/{{passwordToken}}</p>
+      <p>This link is only valid until {{Date.now() + 7200000}} 
+      </p>
+    </div>
+  </section>
+</body>
+</html>

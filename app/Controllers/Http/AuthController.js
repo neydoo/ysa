@@ -2,6 +2,8 @@
 
 const User = use('App/Models/User')
 const Staff = use('App/Models/Staff')
+const Mail = use('Mail')
+const Crypto = use('Crypto')
 
 class AuthController {
     async register({request,response}){
@@ -58,9 +60,60 @@ class AuthController {
                 .where('user.id','=',user.id)
                 return response.json({staff,user,accessToken})
             }
-        }catch(e){
+        } catch(e){
             return response.json(e)
         }
+    }
+
+    async forgotPassword({request,response}){
+        const email = request.body.email
+        const passwordToken = Crypto.randomBytes(20, (err, buffer) => {
+            const token = buffer.toString('hex');
+            return token
+          })
+
+        try{
+            if( await User.findBy(email)){
+                let user = await User.findBy(email)
+                let staff = await Staff.query()
+                .where('user.id','=',user.id)
+                user.password_token = passwordToken
+                user.reset_password_expires = Date.now() + 7200000
+                await Mail.raw('',(message)=>{
+                    message
+                    .to(user.email)
+                    .from('password-reset@ysa.com')
+                    .subject('Password Reset')
+                })
+            }
+        } catch(e){
+            return response.json(e) 
+        }
+       
+    }
+
+    async resetPassword({request,response}){
+        
+       const resetToken = request.body.token
+       const password = request.body.password
+       const user = await  User.find({resetToken,reset_password_expires: {
+        $gt: Date.now()
+      }})
+      if(!err && user){
+        user.password = password
+        user.save()
+        const email = user.email
+        
+        if(await auth.attempt(email,password)){
+            let user = await User.findBy(email)
+            let accessToken = await auth.generate(user)
+
+            let staff = await Staff.query()
+            .where('user.id','=',user.id)
+            return response.json({staff,user,accessToken})
+        }
+
+      }
     }
 
 }

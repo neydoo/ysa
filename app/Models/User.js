@@ -34,6 +34,11 @@ class User extends Model {
   tokens () {
     return this.hasMany('App/Models/Token')
   }
+
+  static get dates () {
+    return super.dates.concat(['reset_password_expires'])
+  }
+  
 }
 
 module.exports = User

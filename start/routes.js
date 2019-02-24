@@ -18,8 +18,16 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 
-Route.post('/auth/register', 'AuthController.register')
-Route.post('/auth/login', 'AuthController.login')
+Route
+.group(() => {
+  
+  Route.post('/register', 'AuthController.register')
+  Route.post('/login', 'AuthController.login')
+  Route.post('/forgotPassword', 'AuthController.forgotPassword')
+  Route.post('/resetPassword', 'AuthController.resetPassword')
+  })
+  .prefix('auth')
+
 Route
   .group(() => {
     Route.get('/', 'BranchController.index')
