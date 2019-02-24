@@ -24,3 +24,5 @@ npm i
 3. Keeps record of sales
 4. Role based permissions
 5. Keeps track of Customers
+
+#### Front-End coming soon
