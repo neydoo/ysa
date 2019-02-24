@@ -71,7 +71,10 @@ class OrderController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    const order = await Orders.find(params.id).query().with('orderitems').fetch()
+    const order = await Orders.query()
+    .where('id','=',params.id)
+    .with('orderitems')
+    .fetch()
     response.json(order)
   }
 

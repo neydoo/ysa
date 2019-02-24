@@ -5,9 +5,8 @@ const Model = use('Model')
 
 class Order extends Model {
     orderitems(){
-        return this.hasMany('App/Models/Orderitem')
+        return this.hasOne('App/Models/Orderitem')
     }
-
     customer(){
         return this.belongsTo('App/Models/Customer')
     }

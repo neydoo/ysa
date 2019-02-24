@@ -17,11 +17,16 @@
 const Route = use('Route')
 
 Route.on('/').render('welcome')
+
+Route.post('/auth/register', 'AuthController.register')
+Route.post('/auth/login', 'AuthController.login')
 Route
   .group(() => {
     Route.get('/', 'BranchController.index')
     Route.post('/', 'BranchController.store')
     Route.get('/:id', 'BranchController.show')
+    Route.get('/:id/products', 'BranchController.showProduct')
+    Route.get('/:id/orders', 'BranchController.showOrder')
     Route.put('/:id', 'BranchController.update')
     Route.delete('/:id', 'BranchController.destroy')
   })
@@ -58,6 +63,9 @@ Route
     Route.get('/', 'BusinessController.index')
     Route.post('/', 'BusinessController.store')
     Route.get('/:id', 'BusinessController.show')
+    Route.get('/:id/staff', 'BusinessController.showStaff')
+    Route.get('/:id/order', 'BusinessController.showOrder')
+    Route.get('/:id/product', 'BusinessController.showProduct')
     Route.put('/:id', 'BusinessController.update')
     Route.delete('/:id', 'BusinessController.destroy')
   })

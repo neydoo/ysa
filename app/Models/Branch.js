@@ -10,6 +10,12 @@ class Branch extends Model {
     staff(){
         return this.hasMany('App/Models/Staff')
     }
+    products(){
+        return this.hasMany('App/Models/Product')
+    }
+    orders(){
+        return this.hasMany('App/Models/Order')
+    }
 }
 
 module.exports = Branch

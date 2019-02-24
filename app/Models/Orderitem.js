@@ -4,8 +4,8 @@
 const Model = use('Model')
 
 class Orderitem extends Model {
-    products(){
-        return this.hasMany('App/Models/Product')
+    order(){
+        return this.hasOne('App/Models/Order')
     }
 }
 

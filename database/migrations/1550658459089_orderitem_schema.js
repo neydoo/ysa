@@ -8,6 +8,7 @@ class OrderitemSchema extends Schema {
     this.create('orderitems', (table) => {
       table.increments()
       table.string('orderitems').notNullable()
+      table.integer('order_id').unsigned().references('id').inTable('orders')
       table.timestamps()
     })
   }

@@ -20,7 +20,7 @@ class BusinessController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let businesses = await Business.query().with('user').fetch()
+    let businesses = await Business.all().query().with('user').fetch()
     response.json(businesses)
   }
 
@@ -63,6 +63,55 @@ class BusinessController {
   }
 
   /**
+   * Show a  business with orders made.
+   * GET businesses/:id/orders
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   */
+  async showOrder ({params, request, response }) {
+    const business = await Business
+    .query()
+    .where('id','=', params.id)
+    .with('orders')
+    .fetch()
+    response.json(business)
+  }
+  /**
+   * Show a  business with staff.
+   * GET businesses/:id/staff
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   */
+  async showStaff ({params, request, response }) {
+    const business = await Business
+    .query()
+    .where('id','=', params.id)
+    .with('staff')
+    .fetch()
+    response.json(business)
+  }
+  /**
+   * Show a  business with its products.
+   * GET businesses/:id/products
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   */
+  async showProduct ({params, request, response }) {
+    const business = await Business
+    .query()
+    .where('id','=', params.id)
+    .with('product')
+    .fetch()
+    response.json(business)
+  }
+
+  /**
    * Display a single business.
    * GET businesses/:id
    *
@@ -72,7 +121,11 @@ class BusinessController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    const business = await Business.find(params.id).query().with('branches').fetch()
+    const business = await Business
+    .query()
+    .where('id','=', params.id)
+    .with('branches')
+    .fetch()
     response.json(business)
   }
 

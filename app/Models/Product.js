@@ -7,6 +7,9 @@ class Product extends Model {
     manufacturer(){
         return this.hasMany('App/Models/Manufacturer')
     }
+    branch(){
+        return this.hasOne('App/Models/Branch')
+    }
 }
 
 module.exports = Product

@@ -19,6 +19,8 @@ class ProductsSchema extends Schema {
       table.integer('quantity').notNullable()
       table.text('expDate')
       table.integer('manufacturer_id').unsigned().references('id').inTable('manufacturers')
+      table.integer('branch_id').unsigned().references('id').inTable('branches')
+      table.integer('business_id').unsigned().references('id').inTable('businesses')
       table.timestamps()
     })
   }

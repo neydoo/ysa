@@ -1,6 +1,7 @@
 'use strict'
 
 const OrderItem = use('App/Models/Orderitem')
+const Order = use('App/Models/Order')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -44,13 +45,21 @@ class OrderitemController {
    */
   async store ({ request, response }) {
     const orderitem = JSON.stringify(request.body.orderitem)
+    // const orderitem = request.body.orderitem
 
     const order_item = new OrderItem()
+    const order = new Order()
 
     order_item.orderitems = orderitem
-
+    order.total = request.body.total
+    order.staff_id = request.body.staff_id
+    order.branch_id = request.body.branch_id
+    
+    await order.save()
+    order_item.order_id = order.id
     await order_item.save()
-    return response.json(order_item)
+    const ordered_item = JSON.parse(order_item.orderitems)
+    return response.json(order)
 
   }
 

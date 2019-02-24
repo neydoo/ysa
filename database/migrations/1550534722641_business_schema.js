@@ -12,7 +12,6 @@ class BusinessSchema extends Schema {
       table.text('tel').notNullable().unique()
       table.text('email').notNullable().unique()
       table.blob('logo')
-      table.integer('branch_id').unsigned().references('id').inTable('branches')
       table.timestamps()
     })
   }

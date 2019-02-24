@@ -8,8 +8,20 @@ class Staff extends Model {
         return this.belongsTo('App/Models/Business')
     }
     branch(){
-        return this.hasMany('App/Models/Branch')
+        return this.hasOne('App/Models/Branch')
     }
+    user(){
+        return this.belongsTo('App/Models/User')
+    }
+    static get dates () {
+        return super.dates.concat(['dob'])
+      }
+      static formatDates (field, value) {
+        if (field === 'dob') {
+          return value.format('YYYY-MM-DD')
+        }
+        return super.formatDates(field, value)
+      }
 }
 
 module.exports = Staff

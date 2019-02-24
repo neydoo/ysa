@@ -79,6 +79,42 @@ class BranchController {
   }
 
   /**
+   * Display a single branch with its products.
+   * GET branches/:id/products
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   * @param {View} ctx.view
+   */
+  async showProduct ({ params, request, response, view }) {
+    let branch = await Branches.query()
+    .where('id','=',params.id)
+    .with('products')
+    .fetch()
+
+    response.json(branch)
+  }
+
+  /**
+   * Display a single branch with orders.
+   * GET branches/:id
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   * @param {View} ctx.view
+   */
+  async showOrder ({ params, request, response, view }) {
+    let branch = await Branches.query()
+    .where('id','=',params.id)
+    .with('orders')
+    .fetch()
+
+    response.json(branch)
+  }
+
+  /**
    * Render a form to update an existing branch.
    * GET branches/:id/edit
    *
