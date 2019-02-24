@@ -1,31 +1,26 @@
-# Adonis fullstack application
+# YSA
 
-This is the fullstack boilerplate for AdonisJs, it comes pre-configured with.
+This is a store assistant built with
 
-1. Bodyparser
-2. Session
-3. Authentication
-4. Web security middleware
-5. CORS
-6. Edge template engine
-7. Lucid ORM
-8. Migrations and seeds
+1. Adonisjs
+2. sqlite
+3. Nodejs
+4. jwt
 
 ## Setup
 
-Use the adonis command to install the blueprint
+Don't forget to install dependencies
 
 ```bash
-adonis new yardstick
+npm i
 ```
 
-or manually clone the repo and then run `npm install`.
 
 
-### Migrations
+### What it does for you
 
-Run the following command to run startup migrations.
-
-```js
-adonis migration:run
-```
+1. Take stock inventory 
+2. Sell out to customers
+3. Keeps record of sales
+4. Role based permissions
+5. Keeps track of Customers
