@@ -54,11 +54,12 @@ class OrderitemController {
     order.total = request.body.total
     order.staff_id = request.body.staff_id
     order.branch_id = request.body.branch_id
+    order.method_of_payment = request.body.method_of_payment
     
     await order.save()
     order_item.order_id = order.id
     await order_item.save()
-    const ordered_item = JSON.parse(order_item.orderitems)
+    // const ordered_item = JSON.parse(order_item.orderitems)
     return response.json(order)
 
   }

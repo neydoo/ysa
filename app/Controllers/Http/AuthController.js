@@ -98,7 +98,7 @@ class AuthController {
                 .where('user.id','=',user.id).fetch()
                 user.password_token = passwordToken
                 user.reset_password_expires = Date.now() + 7200000
-                await Mail.send('forgot',(message)=>{
+                await Mail.send('forgot',staff.toJSON(),user.toJSON(),(message)=>{
                     message
                     .to(user.email)
                     .from('password-reset@ysa.com')
