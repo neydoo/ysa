@@ -4,9 +4,28 @@ const User = use('App/Models/User')
 const Staff = use('App/Models/Staff')
 const Mail = use('Mail')
 const Crypto = use('Crypto')
+const {validate} = use('Validator')
 
 class AuthController {
     async register({request,response}){
+
+        const rules ={
+            email: 'required|email|unique:users,email',
+            username: 'required|username|unique:users,username',
+            password: 'required|min:6',
+            name: 'required'
+        }
+
+        const validation = await validate(request.all(), rules)
+
+    if (validation.fails()) {
+      session
+        .withErrors(validation.messages())
+        .flashExcept(['password'])
+
+      return response.redirect('back')
+    }
+
         const username = request.body.username 
         const password = request.body.password 
         const email = request.body.email
@@ -79,7 +98,7 @@ class AuthController {
                 .where('user.id','=',user.id).fetch()
                 user.password_token = passwordToken
                 user.reset_password_expires = Date.now() + 7200000
-                await Mail.raw('',(message)=>{
+                await Mail.send('forgot',(message)=>{
                     message
                     .to(user.email)
                     .from('password-reset@ysa.com')
@@ -113,6 +132,8 @@ class AuthController {
             return response.json({staff,user,accessToken})
         }
 
+      }else{
+          return response.status(400).send({message:"Password reset token is invalid or has expired."})
       }
     }
 

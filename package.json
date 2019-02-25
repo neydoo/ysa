@@ -27,6 +27,7 @@
     "@adonisjs/mail": "^3.0.9",
     "@adonisjs/session": "^1.0.27",
     "@adonisjs/shield": "^1.0.8",
+    "@adonisjs/validator": "^5.0.6",
     "adonis-mail-provider": "^2.0.2",
     "crypto": "^1.0.1",
     "sqlite3": "^4.0.6"
