@@ -9,7 +9,6 @@ class UserSchema extends Schema {
       table.increments()
       table.string('username', 80).notNullable().unique()
       table.string('email', 254).notNullable().unique()
-      table.string('tel', 11).notNullable().unique()
       table.string('password', 60).notNullable()
       table.string('password_token')
       table.string('reset_password_expires')

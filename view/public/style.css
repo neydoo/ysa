@@ -1,0 +1,58 @@
+body{
+    text-align: center;
+}
+.item{
+    text-align: left;
+    background-color: black;
+    color:white;
+    border-radius: 5%;
+    margin: 0.4%;
+    padding: 0.4%;
+    height:100px;
+    width:13%;
+   /* display: inline-block; */
+    box-sizing: border-box;
+    float: left;
+    clear: right;
+}
+.cartitem{
+    text-align: left;
+    background-color: red;
+    color:rgb(20, 150, 57);
+    border-radius: 5%;
+    margin: 0.5%;
+    padding: 4%;
+    height:100px;
+    width:80%;
+    display: block;
+    box-sizing: border-box;
+}
+#search{
+    width: 70%;
+    /* border-radius: 5%; */
+    
+}
+form.search button{
+     width: 70%;
+    border-left: none;
+    
+}
+
+.cart{
+    overflow: scroll;
+    height: 550px;
+}
+/* label{
+    justify-content: left;
+} */
+input[type=text],[type=password],[type=date],[type=tel], select, textarea {
+    width: 60%; /* Full width */
+    /* height:15px; */
+    padding: 12px; /* Some padding */  
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 4px; /* Rounded borders */
+    box-sizing: border-box; /* Make sure that padding and width stays in place */
+    margin-top: 2px; /* Add a top margin */
+    margin-bottom: 5px; /* Bottom margin */
+    resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+  }
