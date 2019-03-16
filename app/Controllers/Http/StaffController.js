@@ -1,5 +1,7 @@
 'use strict'
 
+const Staff = use('App/Models/Staff')
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -17,7 +19,9 @@ class StaffController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
+  async index({ request, response, view }) {
+    let staff = await Staff.all()
+    return response.json(staff)
   }
 
   /**

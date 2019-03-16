@@ -12,6 +12,7 @@ class StaffSchema extends Schema {
       table.text('dob')
       table.text('address')
       table.string('sog')
+      table.string('relationship')
       table.string('lga')
       table.string('sex')
       table.string('nok')

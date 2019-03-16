@@ -16,7 +16,7 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.on('/').render('welcome')
+// Route.on('/').render('welcome')
 
 Route
 .group(() => {
@@ -26,19 +26,19 @@ Route
   Route.post('/forgotPassword', 'AuthController.forgotPassword')
   Route.post('/resetPassword', 'AuthController.resetPassword')
   })
-  .prefix('auth')
+  .prefix('api/auth')
 
 Route
   .group(() => {
-    Route.get('/', 'BranchController.index'.middleware('auth','role'))
-    Route.post('/', 'BranchController.store').middleware('auth','role')
+    Route.get('/', 'BranchController.index').middleware('auth','role')
+    Route.post('/', 'BranchController.store')
     Route.get('/:id', 'BranchController.show').middleware('auth','role')
     Route.get('/:id/products', 'BranchController.showProduct').middleware('auth','role')
     Route.get('/:id/orders', 'BranchController.showOrder').middleware('auth','role')
     Route.put('/:id', 'BranchController.update').middleware('auth','role')
     Route.delete('/:id', 'BranchController.destroy').middleware('auth','admin')
   })
-  .prefix('branch')
+  .prefix('api/branch')
 Route
   .group(() => {
     Route.get('/', 'CustomerController.index').middleware('auth','role')
@@ -47,16 +47,16 @@ Route
     Route.put('/:id', 'CustomerController.update').middleware('auth','role')
     Route.delete('/:id', 'CustomerController.destroy')
   })
-  .prefix('customer')
+  .prefix('api/customer')
 Route
   .group(() => {
     Route.get('/', 'ProductController.index').middleware('auth')
-    Route.post('/', 'ProductController.store').middleware('auth','role')
+    Route.post('/save', 'ProductController.store').middleware('auth')
     Route.get('/:id', 'ProductController.show').middleware('auth')
     Route.put('/:id', 'ProductController.update').middleware('auth')
     Route.delete('/:id', 'ProductController.destroy').middleware('auth','role')
   })
-  .prefix('product')
+  .prefix('api/product')
 Route
   .group(() => {
     Route.get('/', 'OrderController.index').middleware('auth','role')
@@ -65,11 +65,11 @@ Route
     Route.put('/:id', 'OrderController.update').middleware('auth','role')
     Route.delete('/:id', 'OrderController.destroy')
   })
-  .prefix('order')
+  .prefix('api/order')
 Route
   .group(() => {
     Route.get('/', 'BusinessController.index').middleware('auth','admin')
-    Route.post('/', 'BusinessController.store').middleware('auth','admin')
+    Route.post('/', 'BusinessController.store')
     Route.get('/:id', 'BusinessController.show').middleware('auth','admin')
     Route.get('/:id/staff', 'BusinessController.showStaff').middleware('auth','admin')
     Route.get('/:id/order', 'BusinessController.showOrder').middleware('auth','admin')
@@ -77,16 +77,16 @@ Route
     Route.put('/:id', 'BusinessController.update').middleware('auth','admin')
     Route.delete('/:id', 'BusinessController.destroy').middleware('auth','admin')
   })
-  .prefix('business')
+  .prefix('api/business')
 Route
   .group(() => {
-    Route.get('/', 'StaffController.index').middleware('auth','admin')
+    Route.get('/', 'StaffController.index')
     Route.post('/', 'StaffController.store')
     Route.get('/:id', 'StaffController.show').middleware('auth','admin')
     Route.put('/:id', 'StaffController.update').middleware('auth','admin')
     Route.delete('/:id', 'StaffController.destroy').middleware('auth','admin')
   })
-  .prefix('staff')
+  .prefix('api/staff')
 Route
   .group(() => {
     Route.get('/', 'OrderitemController.index').middleware('auth')
@@ -95,7 +95,7 @@ Route
     Route.put('/:id', 'OrderitemController.update').middleware('auth','role')
     Route.delete('/:id', 'OrderitemController.destroy')
   })
-  .prefix('orderitem')
+  .prefix('api/orderitem')
 Route
   .group(() => {
     Route.get('/', 'ManufacturerhController.index').middleware('auth','role')
@@ -104,4 +104,4 @@ Route
     Route.put('/:id', 'ManufacturerController.update').middleware('auth','role')
     Route.delete('/:id', 'ManufacturerController.destroy').middleware('auth','role')
   })
-  .prefix('manufacturer')
+  .prefix('api/manufacturer')

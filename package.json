@@ -32,7 +32,6 @@
     "crypto": "^1.0.1",
     "sqlite3": "^4.0.6"
   },
-  "devDependencies": {},
   "autoload": {
     "App": "./app"
   }

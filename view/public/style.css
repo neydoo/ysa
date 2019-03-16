@@ -1,6 +1,11 @@
 body{
     text-align: center;
 }
+
+.error{
+    color:red;
+    font-size: 16px;
+}
 .item{
     text-align: left;
     background-color: black;
@@ -9,12 +14,18 @@ body{
     margin: 0.4%;
     padding: 0.4%;
     height:100px;
-    width:13%;
+    /* width:13%; */
    /* display: inline-block; */
     box-sizing: border-box;
     float: left;
     clear: right;
 }
+
+.cart{
+    overflow: scroll;
+    height: 550px;
+}
+
 .cartitem{
     text-align: left;
     background-color: red;
@@ -38,21 +49,190 @@ form.search button{
     
 }
 
-.cart{
-    overflow: scroll;
-    height: 550px;
+.regform{
+    text-align: left;;
 }
-/* label{
-    justify-content: left;
-} */
 input[type=text],[type=password],[type=date],[type=tel], select, textarea {
-    width: 60%; /* Full width */
-    /* height:15px; */
+    width: 100%; /* Full width */
+    background-color: white;
     padding: 12px; /* Some padding */  
-    border: 1px solid #ccc; /* Gray border */
-    border-radius: 4px; /* Rounded borders */
+    /* border: 0px, 0px, 0px, 0px solid #ccc; Gray border */
+    border-top: 0px ;
+    border-right: 1px solid greenyellow ;
+    border-bottom: 1px solid greenyellow ;
+    border-left: 0px ;
+    border-radius: 5px; /* Rounded borders */
     box-sizing: border-box; /* Make sure that padding and width stays in place */
-    margin-top: 2px; /* Add a top margin */
-    margin-bottom: 5px; /* Bottom margin */
-    resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+    margin-top: 0px; /* Add a top margin */
+    margin-bottom: 0px; /* Bottom margin */
+    transition: 0.8s;
+    height: 45px; /*Ensure uniform height*/
   }
+input[type=text]:hover,[type=password]:hover,[type=date]:hover,[type=tel]:hover, select:hover, textarea:hover{
+    width: 100%; /* Full width */
+    background-color: white;
+    padding: 12px; /* Some padding */  
+    /* border: 0px, 0px, 0px, 0px solid #ccc; Gray border */
+    box-shadow: 0px 0px 5px 0px red;
+    border: none ;
+    border-radius: 5px; /* Rounded borders */
+    box-sizing: border-box; /* Make sure that padding and width stays in place */
+    margin-top: 0px; /* Add a top margin */
+    margin-bottom: 0px; /* Bottom margin */
+    transition: 0.8s;
+    height: 45px; /*Ensure uniform height*/
+  }
+
+  .login{
+    background-color: yellowgreen ;
+    /* color: chartreuse; */
+    height: 450px;
+    padding-top: 50px;
+    box-sizing: border-box;
+    padding-left: -10px;
+
+  }
+
+  .login .row{
+      background-color: rgba(255,255,255,0.8) ;
+      margin: 20px;
+      margin-right: -10px;
+      margin-left: -10px;
+      height:250px;
+      box-sizing: border-box;
+      padding-right: -20px;
+  }
+  .forgot{
+      font-size: 12px;
+  }
+
+.forgot-div{
+    text-align: left;
+    /* padding-left: 15px; */
+}
+
+.forgot-div .click{
+    /* text-align: center; */
+    font-size: 12px;
+}
+  
+  .vertical-align{
+    display: flex;
+    align-items: center;
+  }
+
+  .login .regform{
+      background-color: white ;
+      margin-top: -25px;
+      height: 350px;
+      padding-top: 10px;
+      margin-bottom: -25px;
+      border-radius: 10px;
+      box-shadow: 0px 5px 5px 5px rgba(255, 174, 0, 0.4);
+  }
+
+  .submitButton{
+    width: 80%;
+    border: 1px solid greenyellow;
+    border-radius: 30px;
+    background-color: whitesmoke;
+    padding: 6px;
+    margin-bottom: 20px;
+    transition: 0.8s;
+  }
+  .submitted{
+    width: 80%;
+    height: 35px;
+    background-color: greenyellow;
+    border-radius: 30px;
+    border: 1px solid rgba(241, 3, 3, 0.4);
+    padding: 6px;
+    margin-bottom: 20px;
+    transition: 0.8s;
+  }
+
+  .submitButton:hover {
+    width: 80%;
+    background-color: greenyellow;
+    border-radius: 30px;
+    border: 1px solid rgba(241, 3, 3, 0.4);
+    padding: 6px;
+    margin-bottom: 20px;
+    transition: 0.8s;
+}
+.logoDiv{
+    margin-left:0.8px;
+    margin-right:0.8px;
+    box-sizing: border-box;
+}
+.uploadDiv{
+    width: 100%;
+    height: 45px;
+    border-top: 0px ;
+    border-right: 1px solid greenyellow ;
+    border-bottom: 1px solid greenyellow ;
+    border-left: 0px ;
+    border-radius: 5px;
+    background-color: white;
+    padding: 0px;
+    box-sizing: border-box;
+    padding-right: 20px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.8s;
+    /* margin: 10px; */
+    /* margin-bottom: 20px; */
+}
+.uploadDiv:hover{
+    width: 100%;
+    height: 45px;
+    box-shadow: 0px 0px 5px 0px red;
+    border: none ;
+    border-radius: 5px;
+    background-color: white;
+    padding: 0px;
+    padding-right: 20px;
+    position: relative;
+    overflow: hidden;
+    /* margin: 10px; */
+    /* margin-bottom: 20px; */
+}
+
+.uploadDiv input.fileButton{
+    /* position: absolute; */
+    top: 0;
+    right: 0;
+    margin: 0;
+    margin-bottom: -20px;
+    padding: 0;
+    width: 100%;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.upload{
+    width: 100%;
+    border: 1px solid greenyellow;
+    border-radius: 30px;
+    background-color: whitesmoke;
+    padding: 6px;
+    margin-top: 30px;
+    /* margin-bottom: 10px; */
+}
+
+.upload:hover {
+    width: 100%;
+    background-color: greenyellow;
+    border-radius: 30px;
+    border: 1px solid rgba(241, 3, 3, 0.4);
+    padding: 6px;
+    padding-top: 6px;
+    margin-top: 30px;
+}
+
+.submit{
+    text-align: center;
+}

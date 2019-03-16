@@ -10,6 +10,13 @@ class Product extends Model {
     branch(){
         return this.hasOne('App/Models/Branch')
     }
+    static get dates () {
+        return super.dates.concat(['batch'])
+    }
+    
+    static get dates () {
+        return super.dates.concat(['expDate'])
+      }
 }
 
 module.exports = Product

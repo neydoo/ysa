@@ -38,6 +38,10 @@ class User extends Model {
   static get dates () {
     return super.dates.concat(['reset_password_expires'])
   }
+
+  staff() {
+    return this.hasOne('App/Models/Staff')
+  }
   
 }
 

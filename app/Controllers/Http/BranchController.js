@@ -18,7 +18,7 @@ class BranchController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let branches = await Branches.all()
+    let branches = Branches.all()
     return response.json(branches)
   }
 

@@ -3,27 +3,32 @@
 const User = use('App/Models/User')
 const Staff = use('App/Models/Staff')
 const Mail = use('Mail')
-const Crypto = use('Crypto')
+const Crypto = use('crypto')
 const {validate} = use('Validator')
 
 class AuthController {
-    async register({request,response}){
+    async register({session,auth,request,response}){
 
         const rules ={
             email: 'required|email|unique:users,email',
-            username: 'required|username|unique:users,username',
+            username: 'required|unique:users,username',
+            tel: 'required|unique:staff,tel',
             password: 'required|min:6',
-            name: 'required'
         }
 
-        const validation = await validate(request.all(), rules)
+        const messages = {
+            'username.unique' : 'This username is already taken',
+            'email.unique' : 'Email already exists',
+            'tel.unique' : 'Telephone already exists',
+            'password.min' : 'Password length should be at least 6',
+        }
+
+        const validation = await validate(request.all(), rules, messages)
 
     if (validation.fails()) {
-      session
-        .withErrors(validation.messages())
-        .flashExcept(['password'])
-
-      return response.redirect('back')
+      
+        // console.log(validation.messages())
+      return response.status(409).json({message: validation.messages()})
     }
 
         const username = request.body.username 
@@ -38,51 +43,71 @@ class AuthController {
         const address = request.body.address
         const tel = request.body.tel
         const role = request.body.role
-        const branch_id = request.body.branch_id
-
-        const user = new User()
-
-        user.username = username
-        user.email = email
-        user.password = password
-
-        await user.save()
-        let accessToken = await auth.generate(user)
-
-        const staff = new Staff()
-        staff.name = name
-        staff.lga = lga
-        staff.nok = nok
-        staff.dob = dob
-        staff.sog = sog
-        staff.sex = sex
-        staff.address = address
-        staff.branch_id = branch_id
-        staff.tel = tel
-        staff.role = role
-        staff.user_id = user_id
+        const branch_id = 1
+        const relationship = request.body.relationship
         
-        await staff.save()
-        return response.json({user,staff,accessToken}) 
-    }
+            try {
+                    const user = new User()
     
-    async login({request,response}){
+                    user.username = username
+                    user.email = email
+                    user.password = password
+        
+                    await user.save()
+                    let accessToken = await auth.generate(user)
+        
+                    const staff = new Staff()
+                    staff.name = name
+                    staff.lga = lga
+                    staff.nok = nok
+                    staff.dob = dob
+                    staff.sog = sog
+                    staff.relationship = relationship
+                    staff.sex = sex
+                    staff.address = address
+                    staff.branch_id = branch_id
+                    staff.tel = tel
+                    staff.role = role
+                    staff.user_id = user.id
+                
+                    await staff.save()
+                    return response.json({ user, staff, accessToken })
+                
+            } catch (e) {
+                console.log('err', e)
+                return response.status(409).json({message: e})
+            }
+        
+        
+            }   
+   
+    
+    async login({auth, request,response}){
         const email = request.body.email
         const password = request.body.password
-
-        try{
-            if(await auth.attempt(email,password)){
-                let user = await User.findBy(email)
-                let accessToken = await auth.generate(user)
-
-                let staff = await Staff.query()
-                .where('user.id','=',user.id).fetch()
-                return response.json({staff,user,accessToken})
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const emailBool = pattern.test(email)
+       
+        try {
+            if(emailBool){
+                let user = await User.query().where('email', email)
+                .with('staff').fetch()
+                const token = await auth.attempt(email, password)
+                return response.json({ token, user, })
+            } else {
+                let username = request.body.email
+                let user = await User.query().where('username', username).with('staff').fetch()
+                const token = await auth.authenticator('userjwt').withRefreshToken().attempt(username, password)
+                // const token = await auth.attempt(email, password)
+                return response.json({ token, user })
+                // console.log(email)
             }
-        } catch(e){
-            return response.json(e)
+            
+            } catch (e) {
+                return response.status(400).json({'message': e, 'error':"error"})
+            }
         }
-    }
+        
 
     async forgotPassword({request,response}){
         const email = request.body.email

@@ -16,12 +16,12 @@ class Staff extends Model {
     static get dates () {
         return super.dates.concat(['dob'])
       }
-      static formatDates (field, value) {
-        if (field === 'dob') {
-          return value.format('YYYY-MM-DD')
-        }
-        return super.formatDates(field, value)
-      }
+      // static formatDates (field, value) {
+      //   if (field === 'dob') {
+      //     return value.format('YYYY-MM-DD')
+      //   }
+      //   return super.formatDates(field, value)
+      // }
 }
 
 module.exports = Staff

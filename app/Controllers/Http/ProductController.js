@@ -21,7 +21,7 @@ class ProductController {
    */
   async index ({ request, response, view }) {
     const products = await Products.all()
-    return response.json(products)
+    return response.json({products})
   }
 
   /**
@@ -45,17 +45,17 @@ class ProductController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const name = request.input.name
-    const batch = request.input.batch
-    const productType = request.input.productType
-    const description = request.input.description
-    const otherDesc = request.input.otherDesc
-    const barcode = request.input.barcode
-    const costPrice = request.input.costPrice
-    const sellingPrice = request.input.sellingPrice
-    const quantity = request.input.quantity
-    const variants = request.input.variants
-    const expDate = request.input.expDate
+    const name = request.body.name
+    const batch = request.body.batch
+    const productType = request.body.productType
+    const description = request.body.description
+    const otherDesc = request.body.otherDesc
+    const barcode = request.body.barcode
+    const costPrice = request.body.costPrice
+    const sellingPrice = request.body.sellingPrice
+    const quantity = request.body.quantity
+    const variants = request.body.variants
+    const expDate = request.body.expDate
 
     const product = new Products()
 
@@ -72,7 +72,7 @@ class ProductController {
     product.expDate = expDate
 
     await product.save()
-    return response.json(product) 
+    return response.json({product}) 
   }
 
   /**
@@ -85,8 +85,8 @@ class ProductController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    const product = Poduct.find(params.id)
-    return response.json(product)
+    const product = Products.find(params.id)
+    return response.json({product})
   }
 
   /**
@@ -110,17 +110,17 @@ class ProductController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
-    const name = request.input.name
-    const batch = request.input.batch
-    const productType = request.input.productType
-    const description = request.input.description
-    const otherDesc = request.input.otherDesc
-    const barcode = request.input.barcode
-    const costPrice = request.input.costPrice
-    const sellingPrice = request.input.sellingPrice
-    const quantity = request.input.quantity
-    const expDate = request.input.expDate
-    const variants = request.input.variants
+    const name = request.body.name
+    const batch = request.body.batch
+    const productType = request.body.productType
+    const description = request.body.description
+    const otherDesc = request.body.otherDesc
+    const barcode = request.body.barcode
+    const costPrice = request.body.costPrice
+    const sellingPrice = request.body.sellingPrice
+    const quantity = request.body.quantity
+    const expDate = request.body.expDate
+    const variants = request.body.variants
 
     const product = Products.find(params.id)
 
@@ -137,7 +137,7 @@ class ProductController {
     product.expDate = expDate
 
     await product.save()
-    return response.json(product)  
+    return response.json({product})  
   }
 
   /**

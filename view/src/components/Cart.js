@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class Cart extends Component{
     render() {
         return (
-            <div className="col-md-3 cart">
+            <div className="col-md-12 cart">
                 <h4>Cart </h4>
                     <ol>
                         <li>

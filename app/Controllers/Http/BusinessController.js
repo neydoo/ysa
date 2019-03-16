@@ -45,11 +45,11 @@ class BusinessController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const name = request.input.name
-    const email = request.input.email
-    const tel = request.input.tel
-    const logo = request.input.logo
-    const address = request.input.address
+    const name = request.body.name
+    const email = request.body.email
+    const tel = request.body.tel
+    const logo = request.body.logo
+    const address = request.body.address
 
     const business = new Business()
     business.name = name
@@ -150,11 +150,11 @@ class BusinessController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
-    const name = request.input.name
-    const email = request.input.email
-    const tel = request.input.tel
-    const logo = request.input.logo
-    const address = request.input.address
+    const name = request.body.name
+    const email = request.body.email
+    const tel = request.body.tel
+    const logo = request.body.logo
+    const address = request.body.address
 
     const business = await Business.find(params.id)
 

@@ -1,13 +1,132 @@
 import React, { Component } from 'react'
-
-class Register extends Component{
+// import axios from '../axios-request'
+ import { connect } from "react-redux";
+ import { setAccess } from "../action";
+ import { setUser } from "../action";
+import { setStaff } from "../action";
+import { bindActionCreators } from 'redux';
+ 
+class RegisterStaff extends Component{
     state = {
-        selectState : [],
-        lga: ['...Select LGA...']
+        lga: ['...Select LGA...'],
+        formError: null,
+        passwordMatch: true,
+        name: '',
+        username: '',
+        password: '',
+        dob: '',
+        email: '',
+        nok: '',
+        relationship: '',
+        soo: '',
+        chosenlga:'',
+        address: '',
+        sex: '',
+        tel: '',
+        role: '',
+        branchId: 1,
+        submitError: null,
+        loader: false,
+        disabled: false,
+        registered:false,
+        userDetails:null
+    }
+
+    passwordOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+           password : e.target.value
+        })
+    }
+    
+    usernameOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+           username : e.target.value
+        })
+    }
+    emailOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+            email: e.target.value
+        })
+    }
+    dobOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+            dob: e.target.value
+        })
+    }
+    nameOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+           name : e.target.value
+        })
+    }
+    nokOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+            nok: e.target.value
+        })
+    }
+    sooOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+           soo : e.target.value
+        })
+    }
+    sexOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+            sex: e.target.value
+        })
+    }
+    telOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+            tel: e.target.value
+        })
+    }
+    roleOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+            role: e.target.value
+        })
+    }
+    addressOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+            address: e.target.value
+        })
+    }
+    relationshipOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+           relationship : e.target.value
+        })
+    }
+
+    lgaOnChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+           chosenlga : e.target.value
+        })
+    }
+
+    checkPasswords = (e) => {
+        e.preventDefault();
+        if(this.state.password !== e.target.value){
+            this.setState({passwordMatch: false })
+        }else{
+            this.setState({passwordMatch: true })
+        }
     }
     handleState = (e) => {
         e.preventDefault();
-            this.setState({ selectState: e.target.value })
+        this.setState({
+            selectState: e.target.value,
+            soo: e.target.value,
+        })
         
             let states = e.target.value
             console.log(e.target.value)
@@ -15,7 +134,6 @@ class Register extends Component{
                 case "Abia":
                     this.setState({
                         lga: ['...Select LGA...', 'Aba North', 'Aba South', 'Arochukwu', 'Bende', 'Ikwuano', 'Isiala Ngwa North', 'Isiala Ngwa South', 'Isuikwuato', 'Obi Ngwa', 'Ohafia', 'Osisioma', 'Ugwunagbo', 'Ukwa East', 'Ukwa West', 'Umuahia North', 'muahia South', 'Umu Nneochi']
-            
                     })
                     break;
            
@@ -248,83 +366,221 @@ class Register extends Component{
              'Ogun','Ondo','Osun','Oyo','Plateau','Rivers','Sokoto','Taraba','Yobe','Zamfara','FCT'
         ]
        
+    handleSubmit = (e) =>{
+        e.preventDefault()
+        const url = '/api/auth/register'
+        const data = new FormData()
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const emailBool = pattern.test(this.state.email)
+        if (this.state.name === '' || this.state.email === '' || !emailBool || this.state.role === '...Select Position...' || this.state.address === '' || this.state.sex === '...Select Sex...' || isNaN(this.state.tel) || this.state.tel === '' || !this.state.passwordMatch || this.state.relationship === '' || this.state.username === '' || this.state.password === '' || this.state.soo === '...Select State...' || this.state.dob === '' || this.state.nok === '' || this.state.chosenlga === '') {
+            this.setState({
+                formError: true
+            })
+            alert('Please check that all fields are filled correctly')
+        }else{
+            this.setState({
+                formError: false,
+                loader: true,
+                disabled: true,
+            })
+
+            data.append('name',this.state.name)
+            data.append('email',this.state.email)
+            data.append('tel',this.state.tel)
+            data.append('address', this.state.address)
+            data.append('username', this.state.username)
+            data.append('dob', this.state.dob)
+            data.append('sog', this.state.soo)
+            data.append('lga', this.state.chosenlga)
+            data.append('nok', this.state.nok)
+            data.append('sex', this.state.sex)
+            data.append('relationship', this.state.relationship)
+            data.append('role', this.state.role)
+            data.append('branch_id', this.state.branch_id)
+            data.append('password', this.state.password)
+
+            fetch(url,{
+                method:'POST',
+                body: data
+            })
+              .then(res => {
+                    console.log('res',res)
+                    this.setState({
+                        loader: false,
+                        disabled: false,
+                    })
+
+                    if(res.status === 409){
+                        res.json()
+                            .then(err => {
+                                const message = err.message[0].message
+                                this.setState({ submitError: message })
+                                alert(this.state.submitError)
+                                return err
+                        })
+                    }else{
+                        res.json()
+                            .then(response => {
+                            this.setState({
+                                userDetails: response.user.username,
+                                registered: true
+                            })
+                            this.props.setUser(response.user)
+                            this.props.setAccess(response.accessToken)
+                            this.props.setStaff(response.staff)
+                            alert(`${this.state.userDetails} has been succesfully registered`)
+                            document.getElementById("reg").reset()
+                            this.setState({
+                                lga: ['...Select LGA...'],
+                                name: '',
+                                username: '',
+                                password: '',
+                                dob: '',
+                                email: '',
+                                nok: '',
+                                relationship: '',
+                                soo: '',
+                                chosenlga:'',
+                                address: '',
+                                sex: '',
+                                tel: '',
+                                role: '',
+                            })
+                        })
+                    }
+              })
+                .catch(e => {
+                    this.setState({
+                        loader: false,
+                        disabled: false,
+                        submitError:e
+                    })
+                    console.log(e)
+                })
+        }
+    }
 
 
 
     render() {
         return (
                 <div>
-                <form>
-                    <div>
-                        <div className="form-group">
-                        <input type="text" placeholder="Full Name" name="fullName" value={this.state.fullName} />
-                        </div>
+                         { this.state.formError ?  <p className="error">Please check that all fields have been correctly filled</p> : null}
+                <form id='reg' onSubmit={this.handleSubmit} >
+                    <div className="row regform">
+                        <div className="col-sm-12">
+                            <div className="col-sm-6">
+                                <div className="form-group">
+                                    <label>Full Name</label>
+                                    <input required disabled={this.state.disabled} onChange={this.nameOnChangeHandler} type="text" placeholder="Full Name" name="fullName" value={this.state.fullName} />
+                                </div>
+                                
+                                <div className="form-group">
+                                    <label>Email</label>
+                                    <input required disabled={this.state.disabled} onChange={this.emailOnChangeHandler} type="text" placeholder="Email" name="email" value={this.state.email} />
+                                </div>
 
-                        <div className="form-group">
-                        <input type="text" placeholder="Username" name="username" value={this.state.username} />
-                        </div>
-                        
-                        <div className="form-group">
-                        <input type="text" placeholder="Email" name="email" value={this.state.email} />
-                        </div>
+                                <div className="form-group">
+                                    <label>Phone Number</label>
+                                    <input required disabled={this.state.disabled} onChange={this.telOnChangeHandler} type="tel" placeholder="Phone Number" name="tel" value={this.state.tel} />
+                                </div>
 
-                        <div className="form-group">
-                        <input type="tel" placeholder="Phone Number" name="tel" value={this.state.tel} />
-                        </div>
+                                <div className="form-group">
+                                    <label>Password</label>
+                                    <input required minLength='6' disabled={this.state.disabled} onChange={this.passwordOnChangeHandler} type="password" placeholder="Password" name="password" value={this.state.password} />
+                                </div>
 
-                        <div className="form-group">
-                        <input type="password" placeholder="Password" name="password" value={this.state.password} />
-                        </div>
+                                <div className="form-group">
+                                    <label>Repeat Password</label>
+                                    <input disabled={this.state.disabled} onBlur={this.checkPasswords} type="password" placeholder="Repeat Password" name="repeatPassword" value={this.state.repeatPassword} />
+                                    {this.state.passwordMatch ? null: <p className="error">Passwords do not match!!</p>}
+                                </div>
 
-                        <div className="form-group">
-                        <input type="password" placeholder="Repeat Password" name="repeatPassword" value={this.state.repeatPassword} />
-                        </div>
+                                <div className="form-group">
+                                    <label>State of Origin</label>
+                                    <select disabled={this.state.disabled} onChange={this.handleState} name="State">
+                                    {this.states.map(element=>{
+                                        return <option key={element} value={element}>{element}</option>
+                                    })}
+                                    </select>
+                                </div>
+                                
+                                <div className="form-group">
+                                    <label>Local Government Area</label>
+                                    <select disabled={this.state.disabled} onChange={this.lgaOnChangeHandler} name="LGA">
+                                            {this.state.lga.map(element => {
+                                                return <option key={element} value={element}>{element}</option>
+                                        })}
+                                    </select>
+                                </div>
+                            </div>
+                                
+                            <div className="col-sm-6">
 
-                        <div className="form-group">
+                                <div className="form-group">
+                                    <label>Username</label>
+                                    <input required disabled={this.state.disabled} onChange={this.usernameOnChangeHandler} type="text" placeholder="Username" name="username" value={this.state.username} />
+                                </div>
                             
-                            <select onChange={this.handleState} name="State">
+                                <div className="form-group">
+                                    <label>Sex</label>
+                                    <select disabled={this.state.disabled} onChange={this.sexOnChangeHandler} id="sex" name="sex">
+                                        <option value="">...Select Sex...</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Male">Male</option>
+                                    </select>
+                                </div>
+                            
+                                <div className="form-group">
+                                    <label>Date of Birth</label>
+                                    <input required disabled={this.state.disabled} onChange={this.dobOnChangeHandler} type="date" placeholder="Date of Birth" name="dob" value={this.state.dob} />
+                                </div>
 
-                            {this.states.map(element=>{
-                                return <option key={element} value={element}>{element}</option>
-                            })}
-                        </select>
-                        </div>
-                        
-                        <div className="form-group">
-                        <select name="LGA">
-                                {this.state.lga.map(element => {
-                                    return <option key={element} value={element}>{element}</option>
-                            })}
-                        </select>
-                        </div>
+                                <div className="form-group">
+                                    <label>Position</label>
+                                    <select disabled={this.state.disabled} onChange={this.roleOnChangeHandler} id="position" name="position">
+                                        <option value="">...Select Position...</option>
+                                        <option value="Sales clerk">Sales clerk</option>
+                                        <option value="Manager">Manager</option>
+                                        <option value="Admin">Admin</option>
+                                    </select>
+                                </div>
 
-                    
-                        <div className="form-group">
-                        <input type="text" placeholder="Next of Kin" name="nok" value={this.state.nok} />
-                        </div>
+                                <div className="form-group">
+                                    <label> Residential Address</label>
+                                    <textarea required disabled={this.state.disabled} onChange={this.addressOnChangeHandler}  placeholder="Address" name="address" value={this.state.address} />
+                                </div>
 
-                        <div className="form-group">
-                        <input type="text" placeholder="Sex" name="sex" value={this.state.sex} />
-                        </div>
+                                <div className="form-group">
+                                    <label>Next of Kin</label>
+                                    <input required disabled={this.state.disabled} onChange={this.nokOnChangeHandler} type="text" placeholder="Next of Kin" name="nok" value={this.state.nok} />
+                                </div>
 
-                    
-                        <div className="form-group">
-                        <input type="date" placeholder="Date of Birth" name="dob" value={this.state.dob} />
-                        </div>
+                                <div className="form-group">
+                                    <label>Relationship</label>
+                                    <input required disabled={this.state.disabled} onChange={this.relationshipOnChangeHandler} type="text" placeholder="Relationship" name="nok" value={this.state.relationship} />
+                                </div>
 
-                        <div className="form-group">
-                        <textarea placeholder="Address" name="address" value={this.state.address} />
+                            </div>
                         </div>
-
-                        <div className="form-group">
-                            <select id="position" name="position">
-                            <option value="">...Select Position...</option>
-                            <option value="Sales clerk">Sales clerk</option>
-                            <option value="Manager">Manager</option>
-                            <option value="Admin">Admin</option>
-                            </select>
-                        </div>
-
+                        { !this.state.loader  ?
+                        <div className="submit">
+                                <button className="submitButton">Register</button>
+                        </div>   :
+                        <div className="submit">
+                            <button className="submitted" disabled={this.state.disabled}>
+                                <span>
+                                    <div className="gooey">
+                                        <span className="dot"></span>
+                                        <div className="dots">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>}
                     </div>
                 </form>
             </div>
@@ -332,4 +588,16 @@ class Register extends Component{
     }
 }
 
-export default Register
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+        token: state.access,
+        staff: state.staff
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({setUser,setAccess,setStaff},dispatch)
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(RegisterStaff)
