@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import Cart from './Cart'
 import Loader from './UI/loader'
+import { connect } from "react-redux";
+import { updateCart, AddToCart } from '../action'
+import { bindActionCreators } from 'redux';
+import UpdateCart from './UpdateCart';
 
 class Products extends Component{
 
     state = {
         products: [],
         cart: [],
-        loader: true
+        loader: true,
+        error: null,
+        showErr:false,
+        updateCartModal:false,
+        qty: 0,
+        productToUpdate: 0,
     }
     
     componentWillMount() {
@@ -21,23 +30,74 @@ class Products extends Component{
                 // 'Content-Type': 'application/json'
             }
         }).then(res => {
+            if (!res.ok && res.status !== 400) {
+            console.log (res)
+           throw Error(res.statusText)
+
+        } 
             res.json().then(res => {
                 console.log(res.products)
                 const products = res.products
                 this.setState({products, loader:false})
             })
+        }).catch(e=>{
+            console.log(e)
+            // const error = Object.value(e)
+            this.setState({error: e.message , showErr: true, loader:false})
         })
     }
+    modalHandler = (e) => {
+        e.preventDefault()
+        this.state.updateCartModal ? this.setState({updateCartModal:false}) : this.setState({updateCartModal:true})
+}
+addTocartHandler = (e,product) =>{
+    e.preventDefault()
+    if (this.props.cart.length > 0) {
+        this.props.cart.map(cartItem => {
+            if (cartItem.id === product.id) {
+                this.setState({ updateCartModal: true, productToUpdate: product.id })
+                return null
+            }
+   return this.props.AddToCart(product)
+        })
+    }
+    console.log(e)
+    console.log(product)
+    }
+    
+
+    UpdateCartComponentInputHandler = (e) =>{
+        e.preventDefault()
+        this.setState({qty:e.target.value})
+    }
+    UpdateCartComponentSubmitHandler = (e) =>{
+        e.preventDefault()
+        this.setState({ updateCartModal: false })
+        this.props.cart.map(product => {
+            if (product.id === this.state.productToUpdate) {
+                this.setState({ updateCartModal: true, productToUpdate: product.id })
+                this.props.updateCart(product)
+            }
+            return null
+        })
+    }
+
     render() {
         return (
             <div>
-                {this.state.loader ? <Loader show={this.state.loader}/> :
+                {this.state.loader ? <Loader show={this.state.loader} /> :
+                <div>
+                    {this.state.showErr ? 
+                            <p className="error">  <strong>Error!</strong> <br />
+                                Seems there was an error connecting to the server <br />
+                               {this.state.error}
+                        </p>:
             <div className="row">
             <div className="col-sm-7 col-xs-6 col-md-9">
                             <h4>Products</h4>
                             {this.state.products.map(product => {
                                 return(
-                                <div key={product.id} className="col-xs-5 col-md-3 col-sm-3 item">
+                                <div key={product.id} onClick={(e)=>this.addTocartHandler(e, product)} className="col-xs-5 col-md-3 col-sm-3 item">
                                         <h3>{product.name}</h3>
                                         <h5>{product.sellingPrice}</h5>
                             </div>)
@@ -77,15 +137,32 @@ class Products extends Component{
                 </div>
                 <div className="col-xs-5 col-md-3 col-sm-3 item">
                     <h6>Product Item</h6>
+                    {console.log(this.props)}
                     </div>
                 </div>
                 <div className="col-sm-5 col-xs-6 col-md-3">
-                    <Cart />
+                                    <Cart />
+                                    <UpdateCart
+                                        show={this.state.updateCartModal}
+                                        input={this.UpdateCartComponentInputHandler}
+                                        submit={this.UpdateCartComponentSubmitHandler}
+                                        clicked={this.modalHandler}
+                                    />
                 </div>
-            </div>  }
+                </div>}
+            </div>  }  
                 </div>
         )
     }
 }
 
-export default Products
+const mSTD = (state) => {
+    return {
+        cart: state.cart,
+    }
+}
+const mDTP = (dispatch) => {
+    return bindActionCreators({updateCart, AddToCart},dispatch)
+}
+
+export default connect(mSTD,mDTP)(Products)

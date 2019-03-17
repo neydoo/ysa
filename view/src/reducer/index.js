@@ -1,12 +1,7 @@
 import { combineReducers } from "redux";
-import { SET_ACCESS } from "../action";
-import { SET_USER } from "../action";
-import { SET_STAFF } from "../action";
-const userState = sessionStorage.getItem('user')
-const accessState = sessionStorage.getItem('token')
-const staffState = sessionStorage.getItem('staff')
+import { SET_ACCESS, SET_USER, SET_STAFF, REMOVE_CART, ADD_CART, UPDATE_CART } from "../action";
 
-const user = (state = userState, action) => {
+const user = (state = [], action) => {
     switch (action.type) {
         case SET_USER:
             return action.user
@@ -14,7 +9,7 @@ const user = (state = userState, action) => {
             return state
     }
 }
-const staff = (state = staffState, action) => {
+const staff = (state = [], action) => {
     switch (action.type) {
         case SET_STAFF:
             return action.staff
@@ -22,7 +17,7 @@ const staff = (state = staffState, action) => {
             return state
     }
 }
-const access = (state = accessState, action) => {
+const access = (state = [], action) => {
     switch (action.type) {
         case SET_ACCESS:
             return action.access
@@ -31,5 +26,20 @@ const access = (state = accessState, action) => {
     }
 }
 
-const rootReducer = combineReducers({user , staff, access}) 
+const cart = (state = [], action) => {
+    switch (action.type) {
+        case ADD_CART:
+        return [...state,action.product]
+        case REMOVE_CART:
+        let cart = state.filter(item => item.id !== action.cart.id)
+            return cart  
+        case UPDATE_CART:
+            let cartProduct = [...state]
+            return cartProduct.quantity = action.qty
+        default:
+            return state
+    }
+}
+    
+const rootReducer = combineReducers({user , cart, staff, access}) 
 export default rootReducer
