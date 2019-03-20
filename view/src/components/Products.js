@@ -36,7 +36,7 @@ class Products extends Component{
 
         } 
             res.json().then(res => {
-                console.log(res.products)
+                // console.log(res.products)
                 const products = res.products
                 this.setState({products, loader:false})
             })
@@ -52,17 +52,32 @@ class Products extends Component{
 }
 addTocartHandler = (e,product) =>{
     e.preventDefault()
+    console.log('product.id',product.id)
+    this.setState({
+        updateCartModel:true,
+    })
     if (this.props.cart.length > 0) {
         this.props.cart.map(cartItem => {
-            if (cartItem.id === product.id) {
-                this.setState({ updateCartModal: true, productToUpdate: product.id })
-                return null
+            console.log('cartItem[1].id', cartItem[1].id)
+            const ids = this.props.cart.map(item => item[1].id)
+            if (ids.includes(product.id)) {
+                // const updateId = cartItem.id
+                this.setState({
+                    productToUpdate: cartItem[1].id,
+                    updateCartModal: true,
+                })
+                // console.log(product.id)
+                // console.log(this.state.updateCartModal)
+                // console.log(updateId)
+            }else if(this.props.cart.length > 0 && !ids.includes(product.id)){
+                this.props.AddToCart(product)
             }
-   return this.props.AddToCart(product)
+            return null
         })
+    } else {
+        this.props.AddToCart(product)
+        console.log(product)
     }
-    console.log(e)
-    console.log(product)
     }
     
 
@@ -72,14 +87,17 @@ addTocartHandler = (e,product) =>{
     }
     UpdateCartComponentSubmitHandler = (e) =>{
         e.preventDefault()
+        console.log(this.state.productToUpdate)
         this.setState({ updateCartModal: false })
         this.props.cart.map(product => {
-            if (product.id === this.state.productToUpdate) {
-                this.setState({ updateCartModal: true, productToUpdate: product.id })
-                this.props.updateCart(product)
+            console.log(product)
+            if (product[1].id === this.state.productToUpdate) {
+                // this.setState({ updateCartModal: true, productToUpdate: product.id })
+                this.props.updateCart(product ,this.state.qty)
             }
             return null
         })
+        this.setState({qty: ''})
     }
 
     render() {
@@ -137,13 +155,13 @@ addTocartHandler = (e,product) =>{
                 </div>
                 <div className="col-xs-5 col-md-3 col-sm-3 item">
                     <h6>Product Item</h6>
-                    {console.log(this.props)}
+                    {/* {console.log(this.props)} */}
                     </div>
                 </div>
                 <div className="col-sm-5 col-xs-6 col-md-3">
                                     <Cart />
                                     <UpdateCart
-                                        show={this.state.updateCartModal}
+                                        shows={this.state.updateCartModal}
                                         input={this.UpdateCartComponentInputHandler}
                                         submit={this.UpdateCartComponentSubmitHandler}
                                         clicked={this.modalHandler}

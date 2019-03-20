@@ -4,6 +4,7 @@ export const SET_ACCESS = 'SET_ACCESS'
 export const REMOVE_CART = 'REMOVE_CART' 
 export const ADD_CART = 'ADD_CART' 
 export const UPDATE_CART = 'UPDATE_CART' 
+export const SET_PRODUCTS = 'SET_PRODUCTS' 
 
 export const setUser = (user) => {
     return {
@@ -29,7 +30,16 @@ export const setAccess = (access) => {
 export const AddToCart = (product) => {
     return {
         type: ADD_CART,
-        product
+        product,
+        qty: 1
+    }
+}
+
+export const setProducts = (product,qty) => {
+    return {
+        type: SET_PRODUCTS,
+        product,
+        qty
     }
 }
 
@@ -40,9 +50,10 @@ export const RemoveFromCart = (cart) => {
     }
 }
 
-export const updateCart = (qty) => {
+export const updateCart = (product,qty) => {
     return {
         type: UPDATE_CART,
+        product,
         qty
     }
 }

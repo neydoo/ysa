@@ -54,7 +54,7 @@ form.search button{
 .regform{
     text-align: left;;
 }
-input[type=text],[type=password],[type=date],[type=tel], select, textarea {
+input[type=text],[type=password],[type=date],[type=tel],[type=number], select, textarea {
     width: 100%; /* Full width */
     background-color: white;
     padding: 12px; /* Some padding */  
@@ -70,7 +70,7 @@ input[type=text],[type=password],[type=date],[type=tel], select, textarea {
     transition: 0.8s;
     height: 45px; /*Ensure uniform height*/
   }
-input[type=text]:hover,[type=password]:hover,[type=date]:hover,[type=tel]:hover, select:hover, textarea:hover{
+input[type=text]:hover,[type=password]:hover,[type=date]:hover,[type=tel],[type=number]:hover, select:hover, textarea:hover{
     width: 100%; /* Full width */
     background-color: white;
     padding: 12px; /* Some padding */  
