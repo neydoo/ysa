@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import ForgotPassword from './components/ForgotPassword';
 import Products from './components/Products';
 import Login from './components/Login';
+import NewProduct from './components/NewProduct';
+import RegisterStaff from './components/RegisterStaff';
 import Loader from './components/UI/loader'
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -22,7 +24,9 @@ class App extends Component {
           
           <Route path="/login" component={Login} />
               <Route path="/forgot-password" component={ForgotPassword} />
+              <Route path="/register-staff" component={RegisterStaff} />
               <Route path="/products" component={Products} />
+              <Route path = "/new-product" component={NewProduct} />
       </div>
       </Router>
     );

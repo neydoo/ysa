@@ -35,14 +35,6 @@ export const AddToCart = (product) => {
     }
 }
 
-export const setProducts = (product,qty) => {
-    return {
-        type: SET_PRODUCTS,
-        product,
-        qty
-    }
-}
-
 export const RemoveFromCart = (cart) => {
     return {
         type: REMOVE_CART,

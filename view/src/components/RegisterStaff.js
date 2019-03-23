@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 // import axios from '../axios-request'
- import { connect } from "react-redux";
- import { setAccess } from "../action";
- import { setUser } from "../action";
+import { connect } from "react-redux";
+import { setAccess } from "../action";
+import { setUser } from "../action";
 import { setStaff } from "../action";
 import { bindActionCreators } from 'redux';
+import Datetime from 'react-datetime';
  
 class RegisterStaff extends Component{
     state = {
@@ -409,7 +410,8 @@ class RegisterStaff extends Component{
                         loader: false,
                         disabled: false,
                     })
-
+                    // res status has been set to 409 to indicate there awas probably already a user with these details
+                    // shows the error oon this case
                     if(res.status === 409){
                         res.json()
                             .then(err => {
@@ -423,12 +425,12 @@ class RegisterStaff extends Component{
                             .then(response => {
                             this.setState({
                                 userDetails: response.user.username,
-                                registered: true
+                                registered: true  // not sure why this is here again, might find out in due time, I'll leave it here for now though 
                             })
                             this.props.setUser(response.user)
                             this.props.setAccess(response.accessToken)
                             this.props.setStaff(response.staff)
-                            alert(`${this.state.userDetails} has been succesfully registered`)
+                            alert(`${this.state.userDetails} has been succesfully registered`) 
                             document.getElementById("reg").reset()
                             this.setState({
                                 lga: ['...Select LGA...'],
@@ -463,6 +465,12 @@ class RegisterStaff extends Component{
 
 
     render() {
+        let date = new Date()
+        let maxYear = Datetime.moment().subtract( 16, 'year' );
+        let defaultDate = Datetime.moment().subtract( 16, 'year' )
+        let valid = function( current ){
+            return current.isBefore( maxYear );
+        };
         return (
                 <div>
                          { this.state.formError ?  <p className="error">Please check that all fields have been correctly filled</p> : null}
@@ -472,7 +480,7 @@ class RegisterStaff extends Component{
                             <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Full Name</label>
-                                    <input required disabled={this.state.disabled} onChange={this.nameOnChangeHandler} type="text" placeholder="Full Name" name="fullName" value={this.state.fullName} />
+                                    <input required disabled={this.state.disabled} onChange={this.nameOnChangeHandler} type="text" placeholder="Full Name" name="fullName" value={this.state.name} />
                                 </div>
                                 
                                 <div className="form-group">
@@ -533,7 +541,9 @@ class RegisterStaff extends Component{
                             
                                 <div className="form-group">
                                     <label>Date of Birth</label>
-                                    <input required disabled={this.state.disabled} onChange={this.dobOnChangeHandler} type="date" placeholder="Date of Birth" name="dob" value={this.state.dob} />
+                                    
+                                    <Datetime timeFormat={false} isValidDate={valid} defaultValue={defaultDate}   />
+                                    <input required disabled={this.state.disabled} onChange={this.dobOnChangeHandler} type="date"  placeholder="Date of Birth" max='2019-13-13' id="datePickerId" name="date" value={this.state.dob} />
                                 </div>
 
                                 <div className="form-group">

@@ -98,9 +98,7 @@ class AuthController {
                 let username = request.body.email
                 let user = await User.query().where('username', username).with('staff').fetch()
                 const token = await auth.authenticator('userjwt').withRefreshToken().attempt(username, password)
-                // const token = await auth.attempt(email, password)
                 return response.json({ token, user })
-                // console.log(email)
             }
             
             } catch (e) {

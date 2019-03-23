@@ -48,7 +48,7 @@ class RegisterBusiness extends Component {
 
     onSubmitHandler = (e) => {
         e.preventDefault()
-
+        // validate user's input then post to back end if suucessful
         if (this.state.name === '' || this.state.tel === '' || this.state.email === '' || this.state.address === '' || this.state.logo === null || isNaN(this.state.tel)) {
             this.setState({
                 error:true

@@ -31,10 +31,6 @@ const access = (state = [], action) => {
     }
 }
 
-// const products = (state = [], action) => {
-    
-// }
-
 const cart = (state = [], action) => {
     switch (action.type) {
         case ADD_CART:
@@ -43,20 +39,21 @@ const cart = (state = [], action) => {
         // let cart = state.filter(item => item.id !== action.cart.id)
             return state.filter(item=> item[1].id !== action.cart[1].id)  
         case UPDATE_CART:
-        state.filter(item=> item[1].id === action.product[1].id)
-            // return [...state, [action.qty, action.product]]
-            state.map(item => {
-            console.log(item)
+            // first remove the product from the cart, then update the cart with the new quantity
+        let newState = state.filter(item=> item[1].id !== action.product[1].id)
+            newState.map(item => {
             if (item[1].id === action.product[1].id){
-                return action.product[0] = Number(action.qty) +  0
+                // return [...state,action.product[0] = Number(action.qty) + 0]
+                return state
             }
-            return item
+            return [...newState, [Number(action.qty), action.product[1]]]
         })
-            return state
+        return [...newState, [Number(action.qty), action.product[1]]]
         default:
             return state
     }
 }
+
     
 const rootReducer = combineReducers({user , cart, staff, access}) 
 export default rootReducer

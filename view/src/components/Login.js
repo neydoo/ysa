@@ -32,6 +32,7 @@ class Login extends Component{
                 res.json().then(res => {
                     console.log(res.message)
                     const errorMsg = Object.values(res.message)
+                    // displays errors depending on what the error is
                     if (errorMsg[0] === 'username') {
                         this.setState({error :' Invallid Username/Password', showErr: true})
                     }else if (errorMsg[0] === 'email') {
@@ -46,12 +47,12 @@ class Login extends Component{
                     const staff = res.user[0].staff
                     const user = res.user[0]
                     const token = res.token
+                    //trying to save to seession sha
                     sessionStorage.setItem(staff, JSON.stringify(staff));
                     sessionStorage.setItem(user, JSON.stringify(user));
                     sessionStorage.setItem(token, JSON.stringify(token));
-                    console.log(res)
+                    // redirects to products on succesful login
                     this.props.history.push('/products')
-                    console.log(this.props)
                 })
             }
         }
@@ -90,7 +91,7 @@ class Login extends Component{
                                 <h2>Login</h2>
                                 <div className="form-group">
                                     <label>Username or Email</label>
-                                    <input type='text' required onChange={this.usernameHandler} value={this.state.email} />
+                                    <input type='text'autoFocus required onChange={this.usernameHandler} value={this.state.email} />
                                 </div>
 
                                 <div className="form-group">

@@ -56,6 +56,7 @@ class ProductController {
     const quantity = request.body.quantity
     const variants = request.body.variants
     const expDate = request.body.expDate
+    const category = request.body.category
 
     const product = new Products()
 
@@ -70,6 +71,7 @@ class ProductController {
     product.quantity = quantity
     product.variants = variants
     product.expDate = expDate
+    product.category = category
 
     await product.save()
     return response.json({product}) 

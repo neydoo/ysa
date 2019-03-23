@@ -31,38 +31,85 @@ body{
     text-align: left;
     background-color: red;
     cursor: pointer;
-    color:rgb(20, 150, 57);
+    color:black;
     border-radius: 5%;
-    margin: 0.5%;
-    padding: 4%;
-    height:100px;
+    margin: 0.8%;
+    padding: 2%;
+    height: 120px;
     width:80%;
     display: block;
     box-sizing: border-box;
 }
 #search{
     width: 70%;
-    /* border-radius: 5%; */
+    border-radius: 0 0 0 5px greenyellow ;
+    border-right: none;
+    border-top: 0px ;
     
 }
 form.search button{
-     width: 70%;
+    width: 15%;
     border-left: none;
-    
+    /* float: left; */
+    padding: 10px;
+    background: white;
+    color: greenyellow;
+    font-size: 17px;
+    /* border: 1px solid greenyellow; */
+     /* Prevent double borders */
+    cursor: pointer;
+    margin-left: -5px;
+    border-top: 0px ;
+    border-right: 1px solid greenyellow ;
+    border-bottom: 1px solid greenyellow ;
 }
 
 .regform{
     text-align: left;;
 }
+
+.date{
+    width: 100%; /* Full width */
+    background-color: white;
+    padding: 12px; /* Some padding */  
+    /* border: 0px, 0px, 0px, 0px solid #ccc; Gray border */
+    border-right: 1px solid greenyellow ;
+    border-bottom: 1px solid greenyellow ;
+    border-left: 0px ;
+    border-top: 0px ;
+    border-radius: 5px; /* Rounded borders */
+    box-sizing: border-box; /* Make sure that padding and width stays in place */
+    margin-top: 0px; /* Add a top margin */
+    margin-bottom: 0px; /* Bottom margin */
+    transition: 0.8s;
+    height: 45px; /*Ensure uniform height*/
+    padding: 5px;
+}
+
+.date :hover{
+    width: 100%; /* Full width */
+    background-color: white;
+    padding: 12px; /* Some padding */  
+    /* border: 0px, 0px, 0px, 0px solid #ccc; Gray border */
+    box-shadow: 0px 0px 5px 0px red;
+    border: none ;
+    border-radius: 5px; /* Rounded borders */
+    box-sizing: border-box; /* Make sure that padding and width stays in place */
+    margin-top: 0px; /* Add a top margin */
+    margin-bottom: 0px; /* Bottom margin */
+    transition: 0.8s;
+    height: 45px; /*Ensure uniform height*/
+}
+
 input[type=text],[type=password],[type=date],[type=tel],[type=number], select, textarea {
     width: 100%; /* Full width */
     background-color: white;
     padding: 12px; /* Some padding */  
     /* border: 0px, 0px, 0px, 0px solid #ccc; Gray border */
-    border-top: 0px ;
     border-right: 1px solid greenyellow ;
     border-bottom: 1px solid greenyellow ;
     border-left: 0px ;
+    border-top: 0px ;
     border-radius: 5px; /* Rounded borders */
     box-sizing: border-box; /* Make sure that padding and width stays in place */
     margin-top: 0px; /* Add a top margin */
@@ -263,3 +310,242 @@ input[type=text]:hover,[type=password]:hover,[type=date]:hover,[type=tel],[type=
     box-sizing: border-box;
     transition: all 0.3s ease-out;
 }
+
+/* @media(max-width: 768px){
+    .cartitem{
+        height: 200px;
+        width:100%;
+    }
+} */
+
+.DayPickerInput {
+    display: inline-block;
+  }
+  
+  .DayPickerInput-OverlayWrapper {
+    position: relative;
+  }
+  
+  .DayPickerInput-Overlay {
+    position: absolute;
+    left: 0;
+    z-index: 1;
+  
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  }
+
+  .rdt {
+    position: relative;
+  }
+  .rdtPicker {
+    display: none;
+    position: absolute;
+    width: 250px;
+    padding: 4px;
+    margin-top: 1px;
+    z-index: 99999 !important;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    border: 1px solid #f9f9f9;
+  }
+  .rdtOpen .rdtPicker {
+    display: block;
+  }
+  .rdtStatic .rdtPicker {
+    box-shadow: none;
+    position: static;
+  }
+  
+  .rdtPicker .rdtTimeToggle {
+    text-align: center;
+  }
+  
+  .rdtPicker table {
+    width: 100%;
+    margin: 0;
+  }
+  .rdtPicker td,
+  .rdtPicker th {
+    text-align: center;
+    height: 28px;
+  }
+  .rdtPicker td {
+    cursor: pointer;
+  }
+  .rdtPicker td.rdtDay:hover,
+  .rdtPicker td.rdtHour:hover,
+  .rdtPicker td.rdtMinute:hover,
+  .rdtPicker td.rdtSecond:hover,
+  .rdtPicker .rdtTimeToggle:hover {
+    background: #eeeeee;
+    cursor: pointer;
+  }
+  .rdtPicker td.rdtOld,
+  .rdtPicker td.rdtNew {
+    color: #999999;
+  }
+  .rdtPicker td.rdtToday {
+    position: relative;
+  }
+  .rdtPicker td.rdtToday:before {
+    content: '';
+    display: inline-block;
+    border-left: 7px solid transparent;
+    border-bottom: 7px solid #428bca;
+    border-top-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+  }
+  .rdtPicker td.rdtActive,
+  .rdtPicker td.rdtActive:hover {
+    background-color: #428bca;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  }
+  .rdtPicker td.rdtActive.rdtToday:before {
+    border-bottom-color: #fff;
+  }
+  .rdtPicker td.rdtDisabled,
+  .rdtPicker td.rdtDisabled:hover {
+    background: none;
+    color: #999999;
+    cursor: not-allowed;
+  }
+  
+  .rdtPicker td span.rdtOld {
+    color: #999999;
+  }
+  .rdtPicker td span.rdtDisabled,
+  .rdtPicker td span.rdtDisabled:hover {
+    background: none;
+    color: #999999;
+    cursor: not-allowed;
+  }
+  .rdtPicker th {
+    border-bottom: 1px solid #f9f9f9;
+  }
+  .rdtPicker .dow {
+    width: 14.2857%;
+    border-bottom: none;
+    cursor: default;
+  }
+  .rdtPicker th.rdtSwitch {
+    width: 100px;
+  }
+  .rdtPicker th.rdtNext,
+  .rdtPicker th.rdtPrev {
+    font-size: 21px;
+    vertical-align: top;
+  }
+  
+  .rdtPrev span,
+  .rdtNext span {
+    display: block;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
+  }
+  
+  .rdtPicker th.rdtDisabled,
+  .rdtPicker th.rdtDisabled:hover {
+    background: none;
+    color: #999999;
+    cursor: not-allowed;
+  }
+  .rdtPicker thead tr:first-child th {
+    cursor: pointer;
+  }
+  .rdtPicker thead tr:first-child th:hover {
+    background: #eeeeee;
+  }
+  
+  .rdtPicker tfoot {
+    border-top: 1px solid #f9f9f9;
+  }
+  
+  .rdtPicker button {
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  .rdtPicker button:hover {
+    background-color: #eee;
+  }
+  
+  .rdtPicker thead button {
+    width: 100%;
+    height: 100%;
+  }
+  
+  td.rdtMonth,
+  td.rdtYear {
+    height: 50px;
+    width: 25%;
+    cursor: pointer;
+  }
+  td.rdtMonth:hover,
+  td.rdtYear:hover {
+    background: #eee;
+  }
+  
+  .rdtCounters {
+    display: inline-block;
+  }
+  
+  .rdtCounters > div {
+    float: left;
+  }
+  
+  .rdtCounter {
+    height: 100px;
+  }
+  
+  .rdtCounter {
+    width: 40px;
+  }
+  
+  .rdtCounterSeparator {
+    line-height: 100px;
+  }
+  
+  .rdtCounter .rdtBtn {
+    height: 40%;
+    line-height: 40px;
+    cursor: pointer;
+    display: block;
+  
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
+  }
+  .rdtCounter .rdtBtn:hover {
+    background: #eee;
+  }
+  .rdtCounter .rdtCount {
+    height: 20%;
+    font-size: 1.2em;
+  }
+  
+  .rdtMilli {
+    vertical-align: middle;
+    padding-left: 8px;
+    width: 48px;
+  }
+  
+  .rdtMilli input {
+    width: 100%;
+    font-size: 1.2em;
+    margin-top: 37px;
+  }
+  
+  .rdtTime td {
+    cursor: default;
+  }
