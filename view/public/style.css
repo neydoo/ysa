@@ -117,7 +117,7 @@ input[type=text],[type=password],[type=date],[type=tel],[type=number], select, t
     transition: 0.8s;
     height: 45px; /*Ensure uniform height*/
   }
-input[type=text]:hover,[type=password]:hover,[type=date]:hover,[type=tel],[type=number]:hover, select:hover, textarea:hover{
+input[type=text]:hover,[type=password]:hover,[type=date]:hover,[type=tel],[type=number]:hover, select:hover textarea:hover{
     width: 100%; /* Full width */
     background-color: white;
     padding: 12px; /* Some padding */  
@@ -284,6 +284,9 @@ input[type=text]:hover,[type=password]:hover,[type=date]:hover,[type=tel],[type=
 
 .submit{
     text-align: center;
+}
+label{
+  display:block;
 }
 
 .baackdrop {
@@ -549,3 +552,5 @@ input[type=text]:hover,[type=password]:hover,[type=date]:hover,[type=tel],[type=
   .rdtTime td {
     cursor: default;
   }
+
+  

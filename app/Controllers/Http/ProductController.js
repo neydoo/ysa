@@ -1,5 +1,6 @@
 'use strict'
 
+const Subcategory = use('App/Models/Subcategory')
 const Products = use('App/Models/Product')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -47,31 +48,39 @@ class ProductController {
   async store ({ request, response }) {
     const name = request.body.name
     const batch = request.body.batch
-    const productType = request.body.productType
     const description = request.body.description
     const otherDesc = request.body.otherDesc
     const barcode = request.body.barcode
+    const label = request.body.label
     const costPrice = request.body.costPrice
     const sellingPrice = request.body.sellingPrice
     const quantity = request.body.quantity
     const variants = request.body.variants
     const expDate = request.body.expDate
-    const category = request.body.category
+    const category_id = request.body.categoryId
+    const subcategory_name = request.body.subcategory
+
+
+    const subcategory = new Subcategory()
+    subcategory.subcategory_name = subcategory_name
+    subcategory.category_id = category.id
+
+    await subcategory.save()
 
     const product = new Products()
 
     product.name = name
     product.batch = batch
-    product.productType = productType
     product.description = description
     product.otherDesc = otherDesc
     product.barcode = barcode
     product.costPrice = costPrice
     product.sellingPrice = sellingPrice
     product.quantity = quantity
+    product.label = label
     product.variants = variants
     product.expDate = expDate
-    product.category = category
+    product.category_id = category_id
 
     await product.save()
     return response.json({product}) 

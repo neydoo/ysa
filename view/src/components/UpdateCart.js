@@ -13,15 +13,15 @@ const UpdateCart = (props) => {
                             </div>
                         
                             <div className="col-xs-6 regform">
-                                <h2>Add To Cart</h2>
+                                <h2>{props.title || 'Add To Cart'}</h2>
                                 <hr />
                                 <div className="form-group">
-                                    <label>Type in total quantity of product</label>
-                                    <input onChange={props.input} type='number' required value={props.val} autoFocus />
+                                    <label>{props.label ||'Type in total quantity of product'}</label>
+                                    <input onChange={props.input} type={props.inputType || 'number'} required value={props.val} autoFocus />
                                 </div>
                                 
                         <div className="submit">
-                                <button className="submitButton">Add To Cart</button>
+                                <button className="submitButton">{props.title || 'Add To Cart'}</button>
                         </div> 
                                 
                             </div>

@@ -410,8 +410,8 @@ class RegisterStaff extends Component{
                         loader: false,
                         disabled: false,
                     })
-                    // res status has been set to 409 to indicate there awas probably already a user with these details
-                    // shows the error oon this case
+                    // res status has been set to 409 to indicate there is probably another user with these details
+                    // shows the error on this case
                     if(res.status === 409){
                         res.json()
                             .then(err => {
@@ -465,7 +465,7 @@ class RegisterStaff extends Component{
 
 
     render() {
-        let date = new Date()
+        // let date = new Date()
         let maxYear = Datetime.moment().subtract( 16, 'year' );
         let defaultDate = Datetime.moment().subtract( 16, 'year' )
         let valid = function( current ){
@@ -542,8 +542,8 @@ class RegisterStaff extends Component{
                                 <div className="form-group">
                                     <label>Date of Birth</label>
                                     
-                                    <Datetime timeFormat={false} isValidDate={valid} defaultValue={defaultDate}   />
-                                    <input required disabled={this.state.disabled} onChange={this.dobOnChangeHandler} type="date"  placeholder="Date of Birth" max='2019-13-13' id="datePickerId" name="date" value={this.state.dob} />
+                                    <Datetime timeFormat={false} isValidDate={valid} onChange={this.dobOnChangeHandler} defaultValue={defaultDate}   />
+                                    {/* <input required disabled={this.state.disabled} onChange={this.dobOnChangeHandler} type="date"  placeholder="Date of Birth" max='2019-13-13' id="datePickerId" name="date" value={this.state.dob} /> */}
                                 </div>
 
                                 <div className="form-group">

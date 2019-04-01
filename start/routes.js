@@ -39,6 +39,26 @@ Route
     Route.delete('/:id', 'BranchController.destroy').middleware('auth','admin')
   })
   .prefix('api/branch')
+
+Route
+  .group(() => {
+    Route.get('/', 'CategoryController.index').middleware('auth')
+    Route.post('/', 'CategoryController.store')
+    Route.get('/:id', 'CategoryController.show').middleware('auth','role')
+    Route.put('/:id', 'CategoryController.update').middleware('auth','role')
+    Route.delete('/delete/:id', 'CategoryController.destroy').middleware('auth')
+  })
+  .prefix('api/category')
+
+Route
+  .group(() => {
+    Route.get('/', 'SubcategoryController.index').middleware('auth')
+    Route.post('/', 'CategoryController.store')
+    Route.get('/:id', 'SubcategoryController.show').middleware('auth')
+    Route.put('/:id', 'CategoryController.update').middleware('auth','role')
+    Route.delete('/:id', 'CategoryController.destroy').middleware('auth','admin')
+  })
+  .prefix('api/subcategory')
 Route
   .group(() => {
     Route.get('/', 'CustomerController.index').middleware('auth','role')

@@ -57,7 +57,7 @@ addTocartHandler = (e,product) =>{
         updateCartModel:true,
     })
     if (this.props.cart.length > 0) {
-        this.props.cart.map(cartItem => {
+        // this.props.cart.map(cartItem => {
             const ids = this.props.cart.map(item => item[1].id)
             if (ids.includes(product.id)) { // checks if the product is already in the cart
                 this.setState({
@@ -68,7 +68,7 @@ addTocartHandler = (e,product) =>{
                 this.props.AddToCart(product)
             }
             return null
-        })
+        // })
     } else {
         this.props.AddToCart(product)
     }
