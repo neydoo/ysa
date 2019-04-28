@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { setAccess } from "../action";
-import { setUser } from "../action";
-import { setStaff } from "../action";
 import { bindActionCreators } from 'redux';
+import { setAccess,setUser,setStaff } from "../action";
 import Datetime from 'react-datetime';
 import Loader from './UI/loader'
 import NewCategory from './UpdateCart'
@@ -38,7 +36,7 @@ class RegisterStaff extends Component{
         subcategories: [],
     }
 
-   nameOnChangeHandler = (e,label) => {
+   nameOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
             name : e.target.value
@@ -64,7 +62,7 @@ class RegisterStaff extends Component{
            sp : e.target.value
         })
     }
-   descOnChangeHandler = (e,label) => {
+   descOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
             description : e.target.value
@@ -72,7 +70,7 @@ class RegisterStaff extends Component{
             this.labelPrintintHandler()
         })
     }
-   otherDescOnChangeHandler = (e,label) => {
+   otherDescOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
             otherDesc : e.target.value
@@ -80,55 +78,65 @@ class RegisterStaff extends Component{
             this.labelPrintintHandler()
         })
     }
-    categoryOnChangeHandler = (e,label) => {
+    categoryOnChangeHandler = (e) => {
         e.preventDefault();
-        this.setState({
-            category: e.target.value
-        }, ()=>{
+        console.log(e.currentTarget)
         
-        if(this.state.category !== 'Add new category'){
-            this.setState({ selectedCategory: e.target.value })
-            
-        // check the categories array for the selected id which is used to search for the sub category in the db  
-        const catToSearch = this.state.categories.filter(item=>{     //returns a single array with the selected category details
-            return item.category_name === this.state.category
-        })
-        const bearer = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MjcyNDI1NX0.4-88vjegT9bit4CXxJNXUKSaDe-XXVLIId-4iNOQA28`
-        const url = `/api/subcategory/${catToSearch[0].id}`     //get the category_id 
-            fetch(url,{                                     // fetch thte subcategory from the db using the category_id gotten earlier
-                method: 'GET',
-                withCredentials: true,
-                credentials: 'include',
-                headers: {
-                    'Authorization': bearer,
-                }
-            }).then(res=>res.json())
-            .then(res=>{
-                const subcategories = res.subcategory
-                if(Object.keys(subcategories).length > 0){
-                    // this.setState({ subcategories })
-                }
+        this.setState({
+            category: e.target.value,
+            subcategories: []
+        }, ()=>{
+            if(this.state.category === '--select category--'){
+                return null
+            }else if(this.state.category !== 'Add new category'){
+            this.setState({ selectedCategory:this.state.category }, () => {
+            // check the categories array for the selected id which is used to search for the sub category in the db  
+            const catToSearch = this.state.categories.filter(item=>{     //returns a single array with the selected category details
+                return item.category_name === this.state.category
+            })
+            const bearer = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MjcyNDI1NX0.4-88vjegT9bit4CXxJNXUKSaDe-XXVLIId-4iNOQA28`
+            const url = `/api/category/${catToSearch[0].id}`     //get the category_id 
+                fetch(url,{                                     // fetch thte subcategory from the db using the category_id gotten earlier
+                    method: 'GET',
+                    withCredentials: true,
+                    credentials: 'include',
+                    headers: {
+                        'Authorization': bearer,
+                    }
+                }).then(res=>res.json())
+                .then(res=>{
+                    const subcategories = res[0].subcategory
+                    console.log(res)
+                    console.log(subcategories)
+                    if(subcategories.length > 0){
+                        this.setState({ subcategories },()=>{
+                            console.log(this.state.subcategories)
+                        })
+                    }
+                })
+                
             })
         } else if (this.state.category === 'Add new category') {
             console.log('seen')
             this.setState({showCategory:true})
-                }
+        }
             })
     }
 
-   subcategoryOnChangeHandler = (e,label) => {
+   subcategoryOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
            subcategory : e.target.value
         },()=>{
-            if(this.state.selectedCategory === ''){
+            if(this.state.selectedCategory === '' || this.state.category === '--select category--'){
                 alert('Please select a category first')
-            } else if (this.state.subcategory === 'Add new subcategory' && this.state.selectedCategory === '') {
-                this.setState({showSubCategory:true})
+            } else if (this.state.subcategory === 'Add new subcategory' && this.state.selectedCategory !== '') {
+                this.setState({showSubcategory:true})
+                
             }
         })
     }
-   variantOnChangeHandler = (e,label) => {
+   variantOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
            variant : e.target.value
@@ -152,12 +160,11 @@ class RegisterStaff extends Component{
            batch : e.target.value
         })
     }
-   labelOnChangeHandler = (e,label) => {
+   labelOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({label:e.target.value})
-        console.log(label)
     }
-   newCategoryOnChangeHandler = (e,label) => {
+   newCategoryOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
            newCategory : e.target.value
@@ -169,7 +176,7 @@ class RegisterStaff extends Component{
         this.state.showCategory ? this.setState({showCategory:false}) : this.setState({showCategory:true})
 }
  
-   newSubcategoryOnChangeHandler = (e,label) => {
+   newSubcategoryOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
            newSubcategory : e.target.value
@@ -178,14 +185,14 @@ class RegisterStaff extends Component{
     
     subCategoryModalHandler = (e) => {
         e.preventDefault()
-        this.state.showSubCategory ? this.setState({showSubCategory:false}) : this.setState({showSubCategory:true})
+        this.state.showSubcategory ? this.setState({showSubcategory:false}) : this.setState({showSubcategory:true})
 }
 
-    labelPrintintHandler = (val) =>{
-            this.setState({label:val})
+    labelPrintintHandler = () =>{
         const label = `${this.state.name} ${this.state.category} ${this.state.subcategory} ${this.state.description}`
         this.setState({label})
     }
+    
     handleDayChange = (selectedDay, modifiers, dayPickerInput)=> {
         const input = dayPickerInput.getInput();
         this.setState({
@@ -245,18 +252,24 @@ saveCategoryHandler = (e)=>{
     }
 }
 
-    saveSubcategoryHandler = () => {
-        if(this.state.newSubcategory !== '' && this.state.selectedCategory !== ''){       //checks if a category has been selected, and if subcategory is empty
+    saveSubcategoryHandler = (e) => {
+        e.preventDefault();
+        console.log(this.state.subcategories)
+        this.state.subcategories.map(subCat=>{
+            console.log(subCat.name)
+            if (subCat.name === this.state.newSubcategory) {
+                alert('this subcategory already exists')
+            } else if((this.state.newSubcategory !== '' && this.state.selectedCategory !== '') || subCat.name !== this.state.newSubcategory){       //checks if a category has been selected, and if subcategory is empty
             const data = new FormData()
             let id = ''
-            const url = '/api/category'
+            const url = '/api/subcategory'
                 
             //get selected category_id from categories array
             const categoryArray = this.state.categories.filter(category=>{      
                 return category.category_name === this.state.selectedCategory
             })
-            console.log(categoryArray)
-            id = categoryArray.id
+            console.log(categoryArray[0].id)
+            id = categoryArray[0].id
             data.append('subcategory_name',this.state.newSubcategory)
             data.append('category_id',id    )
 
@@ -265,10 +278,51 @@ saveCategoryHandler = (e)=>{
                 body: data
             }).then(res=>{
                 this.setState({loader:false})
+                console.log(res)
                 return res.json()
-            }).then(res=>console.log(res))
+            }).then(res => {
+                console.log(res)
+                
+                
+        const bearer = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MjcyNDI1NX0.4-88vjegT9bit4CXxJNXUKSaDe-XXVLIId-4iNOQA28`
+        fetch('/api/category/'+ id,{         //fetches subcategories from the db so the user can select from already saved ones
+            method: 'GET',
+            withCredentials: true,
+            credentials: 'include',
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            if (!res.ok && res.status !== 400) {
+            console.log (res)
+           throw Error(res.statusText)
+
+        } 
+          res.json().then(res => {
+              console.log(res)
+              const subcategories = res.subcategory
+              console.log(res.subcategory)
+            //   this.setState({subcategories},()=>{
+            //   subcategories.map(subcategory => {
+            //       this.setState({ subcategory: subcategory.subcategory_name },()=>{
+            //           console.log(this.state.subcategories)
+            //           console.log(this.state.subcategory)
+            //       })
+            //       return subcategory.id
+            //   })
+            //   })
+          })
+        }).catch(e=>{
+            console.log(e)
+            // const error = Object.value(e)
+            this.setState({error: e.message , showErr: true, initialLoader:false})
+        })
+            })
             
         }
+        
+    })
 
     }
     
@@ -318,11 +372,11 @@ saveCategoryHandler = (e)=>{
               const categories = res.category
               this.setState({categories})
               categories.map(category => {
-                  this.setState({ category: category.category_name,selectedCategory:category.category_name })  
+                  this.setState({ category: category.category_name })  
                   return category.id
             })
               this.setState({ categories, initialLoader: false })              // fills the array with categories from the db and stops the loader
-            //   console.log(category.id)
+              console.log(this.state.category)
           })
         }).catch(e=>{
             console.log(e)
@@ -421,7 +475,7 @@ saveCategoryHandler = (e)=>{
                             <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Product Name</label>
-                                    <input required className="form-control" disabled={this.state.disabled} onChange={(e)=> this.nameOnChangeHandler(e,label)} type="text" placeholder="Product Name" value={this.state.name} />
+                                    <input required className="form-control" disabled={this.state.disabled} onChange={ this.nameOnChangeHandler} type="text" placeholder="Product Name" value={this.state.name} />
                                 </div>
                                 </div>
 
@@ -429,7 +483,8 @@ saveCategoryHandler = (e)=>{
                                     <div className="col-sm-6">
                                          <div className="form-group category-div">
                                             <label>Category</label>
-                                    <select disabled={this.state.disabled} onChange={(e)=> this.categoryOnChangeHandler(e,label)}>
+                                    <select disabled={this.state.disabled} onChange={ this.categoryOnChangeHandler}>
+                                                <option>--select category--</option>
                                         {this.state.categories.map(category => {
                                             return(
                                                 <option key={category.id}>{category.category_name}</option>
@@ -445,13 +500,13 @@ saveCategoryHandler = (e)=>{
                                     <div className="col-sm-6">
                                         <div className="form-group category-div">
                                             <label>Sub category</label>
-                                                <select   disabled={this.state.disabled || this.state.selectedCategory===""} onChange={(e)=> this.subcategoryOnChangeHandler(e,label)} >
+                                                <select   disabled={this.state.disabled} onChange={this.subcategoryOnChangeHandler} >
+                                                <option>--select subcategory--</option>
                                                     {this.state.subcategories.map(subcategory => {
                                                         return(
                                                             <option key={subcategory.id}>{subcategory.subcategory_name}</option>
                                                         )
                                                     })}
-                                                    <option>Add new subscategory</option>
                                                     <option>Add new subcategory</option>
                                                 </select>
                                         </div>
@@ -460,21 +515,21 @@ saveCategoryHandler = (e)=>{
                                     <div className="col-sm-6">
                                         <div className="form-group">
                                             <label>Description</label>
-                                            <input required disabled={this.state.disabled} onChange={(e)=> this.descOnChangeHandler(e,label)} type="text" placeholder="Description" value={this.state.description} />
+                                            <input required disabled={this.state.disabled} onChange={ this.descOnChangeHandler} type="text" placeholder="Description" value={this.state.description} />
                                         </div>
                                     </div>
 
                                     <div className="col-sm-6">
                                         <div className="form-group">
                                             <label>Other Description</label>
-                                            <input className="form-control" disabled={this.state.disabled} onChange={(e)=> this.otherDescOnChangeHandler(e,label)} type="text" placeholder="Other Desc" value={this.state.otherDescription} />
+                                            <input className="form-control" disabled={this.state.disabled} onChange={ this.otherDescOnChangeHandler} type="text" placeholder="Other Desc" value={this.state.otherDescription} />
                                         </div>
                                     </div>
                             {/* {this.state.category === 'Add new category' ?
                                     <div className="col-sm-6">
                                         <div className="form-group">
                                             <label>Add New Category </label>
-                                            <input type="text" className="form-control" onChange={(e)=> this.newCategoryOnChangeHandler(e,label)} required disabled={this.state.disabled} value={this.state.newCategory}  />
+                                            <input type="text" className="form-control" onChange={ this.newCategoryOnChangeHandler} required disabled={this.state.disabled} value={this.state.newCategory}  />
                                         </div>
                                         </div>: null
 }
@@ -482,14 +537,14 @@ saveCategoryHandler = (e)=>{
                                     <div className="col-sm-6">
                                         <div className="form-group">
                                             <label>Add New sub-category </label>
-                                            <input type="text" className="form-control" onChange={(e)=> this.newSubcategoryOnChangeHandler(e,label)} disabled={this.state.disabled} value={this.state.newSubcategory}  />
+                                            <input type="text" className="form-control" onChange={ this.newSubcategoryOnChangeHandler} disabled={this.state.disabled} value={this.state.newSubcategory}  />
                                         </div>
                                     </div> 
                                    : null } */}
                                     <div className="col-sm-6">
                                         <div className="form-group">
                                             <label>Variants</label>
-                                            <input required className="form-control" disabled={this.state.disabled} onChange={(e)=> this.variantOnChangeHandler(e,label)} type="text" placeholder="Variant" value={this.state.variant} />
+                                            <input required className="form-control" disabled={this.state.disabled} onChange={ this.variantOnChangeHandler} type="text" placeholder="Variant" value={this.state.variant} />
                                         </div>
                             </div>
                                     <div className="col-sm-6">
@@ -608,6 +663,7 @@ saveCategoryHandler = (e)=>{
                                 input={this.newCategoryOnChangeHandler}
                                 clicked={this.categoryModalHandler}
                                 submit={this.saveCategoryHandler}
+                                submitButton='Save'
 
                             /> 
                         <NewCategory 
@@ -619,6 +675,7 @@ saveCategoryHandler = (e)=>{
                                 shows={this.state.showSubcategory}
                                 input={this.newSubcategoryOnChangeHandler}
                                 submit={this.saveSubcategoryHandler}
+                                submitButton='Save'
                         /> 
                                 </div>
                     }

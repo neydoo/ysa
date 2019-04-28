@@ -102,7 +102,7 @@ class Login extends Component{
                                 
                                 { !this.state.loader  ?
                         <div className="submit">
-                                <button className="submitButton">Register</button>
+                                <button className="submitButton">Login</button>
                         </div>   :
                         <div className="submit">
                             <button className="submitted" disabled={this.state.disabled}>

@@ -41,7 +41,7 @@ class RegisterBusiness extends Component {
     logoOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
-        logo : e.target.value
+        logo : e.target.files[0]
         })
         console.log(e.target.value)
     }

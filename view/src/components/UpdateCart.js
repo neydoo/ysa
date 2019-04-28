@@ -9,7 +9,6 @@ const UpdateCart = (props) => {
                     <form onSubmit={props.submit}>
                         <div className="row vertical-align">
                             <div className="col-xs-1">
-                                
                             </div>
                         
                             <div className="col-xs-6 regform">
@@ -21,7 +20,7 @@ const UpdateCart = (props) => {
                                 </div>
                                 
                         <div className="submit">
-                                <button className="submitButton">{props.title || 'Add To Cart'}</button>
+                                <button className="submitButton">{props.submitButton || 'Add To Cart'}</button>
                         </div> 
                                 
                             </div>

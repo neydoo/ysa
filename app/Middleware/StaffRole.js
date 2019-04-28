@@ -10,7 +10,8 @@ class StaffRole {
    * @param {Function} next
    */
   async handle ({ request }, next) {
-    // call next to advance the requestconst staff_id = request.body.staff_id
+    // call next to advance the request
+    const staff_id = request.body.staff_id
     const staff = Staff.query()
     .where('id','=',staff_id)
     .fetch()

@@ -44,7 +44,7 @@ Route
   .group(() => {
     Route.get('/', 'CategoryController.index').middleware('auth')
     Route.post('/', 'CategoryController.store')
-    Route.get('/:id', 'CategoryController.show').middleware('auth','role')
+    Route.get('/:id', 'CategoryController.show').middleware('auth')
     Route.put('/:id', 'CategoryController.update').middleware('auth','role')
     Route.delete('/delete/:id', 'CategoryController.destroy').middleware('auth')
   })
@@ -53,10 +53,10 @@ Route
 Route
   .group(() => {
     Route.get('/', 'SubcategoryController.index').middleware('auth')
-    Route.post('/', 'CategoryController.store')
+    Route.post('/', 'SubcategoryController.store')
     Route.get('/:id', 'SubcategoryController.show').middleware('auth')
     Route.put('/:id', 'CategoryController.update').middleware('auth','role')
-    Route.delete('/:id', 'CategoryController.destroy').middleware('auth','admin')
+    Route.delete('/:id', 'subcategoryController.destroy').middleware('auth')
   })
   .prefix('api/subcategory')
 Route

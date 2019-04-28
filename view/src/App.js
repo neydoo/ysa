@@ -7,6 +7,7 @@ import NewProduct from './components/NewProduct';
 import RegisterStaff from './components/RegisterStaff';
 import Loader from './components/UI/loader'
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import Navbar from './components/UI/Navbar';
 
 class App extends Component {
 
@@ -16,17 +17,18 @@ class App extends Component {
   render() {
     return (
       <Router>  
-      <div className="container">
+        <div className="">
+            <Navbar />
+            <div className="container">
         
-        <h6>Hello World</h6>
-      
-            <Loader />
+              <Loader />
           
-          <Route path="/login" component={Login} />
+              <Route path="/login" component={Login} />
               <Route path="/forgot-password" component={ForgotPassword} />
               <Route path="/register-staff" component={RegisterStaff} />
               <Route path="/products" component={Products} />
               <Route path = "/new-product" component={NewProduct} />
+            </div>
       </div>
       </Router>
     );
@@ -34,3 +36,4 @@ class App extends Component {
 }
 
 export default App;
+

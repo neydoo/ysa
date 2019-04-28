@@ -1,5 +1,6 @@
 'use strict'
 const Subcategory = use('App/Models/Subcategory')
+const {validate} = use('Validator')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -9,6 +10,7 @@ const Subcategory = use('App/Models/Subcategory')
  * Resourceful controller for interacting with subcategories
  */
 class SubcategoryController {
+
   /**
    * Show a list of all subcategories.
    * GET subcategories
@@ -44,7 +46,34 @@ class SubcategoryController {
    * @param {Response} ctx.response
    */
   async store({ request, response }) {
+    // const rules ={
+    //     subcategory_name: 'required|subcategory_name|unique:subcategories,subcategory_name'
+    // }
+  
+    // const messages = {
+    //     'subcategory_name.unique' : 'This',
+    //     'email.unique' : 'Email already exists',
+    //     'tel.unique' : 'Telephone already exists',
+    //     'password.min' : 'Password length should be at least 6',
+    // }
+  
+  //   const validation = await validate(request.all(), rules, messages)
+  
+  // if (validation.fails()) {
+  
+  //   // console.log(validation.messages())
+  // return response.status(409).json({message: validation.messages()})
+  // }
     
+    const subcategory_name = request.body.subcategory_name
+    const category_id = request.body.category_id
+
+    const subcategory = new Subcategory()
+    subcategory.subcategory_name = subcategory_name
+    subcategory.category_id = category_id
+
+    await subcategory.save()
+    return response.json(subcategory)
   }
 
   /**
@@ -92,7 +121,10 @@ class SubcategoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy({ params, request, response }) {
+    const subcategory = await Subcategory.find(params.id)
+    await subcategory.delete()
+    return response.json({"message": "Succesfully deleted!"})
   }
 }
 

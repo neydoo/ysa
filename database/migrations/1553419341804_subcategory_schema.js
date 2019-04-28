@@ -7,7 +7,7 @@ class SubcategorySchema extends Schema {
   up () {
     this.create('subcategories', (table) => {
       table.increments()
-      table.text('subcategory_name')
+      table.text('subcategory_name').notNullable()
       table.integer('category_id').unsigned().references('id').inTable('categories')
       table.timestamps()
     })
