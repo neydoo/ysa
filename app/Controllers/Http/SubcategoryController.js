@@ -46,25 +46,6 @@ class SubcategoryController {
    * @param {Response} ctx.response
    */
   async store({ request, response }) {
-    // const rules ={
-    //     subcategory_name: 'required|subcategory_name|unique:subcategories,subcategory_name'
-    // }
-  
-    // const messages = {
-    //     'subcategory_name.unique' : 'This',
-    //     'email.unique' : 'Email already exists',
-    //     'tel.unique' : 'Telephone already exists',
-    //     'password.min' : 'Password length should be at least 6',
-    // }
-  
-  //   const validation = await validate(request.all(), rules, messages)
-  
-  // if (validation.fails()) {
-  
-  //   // console.log(validation.messages())
-  // return response.status(409).json({message: validation.messages()})
-  // }
-    
     const subcategory_name = request.body.subcategory_name
     const category_id = request.body.category_id
 

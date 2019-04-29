@@ -46,11 +46,14 @@ class Login extends Component{
                     console.log(res.user[0].staff)
                     const staff = res.user[0].staff
                     const user = res.user[0]
-                    const token = res.token
+                    const token = res.token.token
                     //trying to save to seession sha
-                    sessionStorage.setItem(staff, JSON.stringify(staff));
-                    sessionStorage.setItem(user, JSON.stringify(user));
-                    sessionStorage.setItem(token, JSON.stringify(token));
+                    sessionStorage.setItem("staff", JSON.stringify(staff));
+                    sessionStorage.setItem("user", JSON.stringify(user));
+                    sessionStorage.setItem("token", token);
+                    console.log('storageUser',user)
+                    console.log('storagToken',token)
+                    console.log('storageStaff',staff)
                     // redirects to products on succesful login
                     this.props.history.push('/products')
                 })

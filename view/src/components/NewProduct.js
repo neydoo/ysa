@@ -5,8 +5,13 @@ import { setAccess,setUser,setStaff } from "../action";
 import Datetime from 'react-datetime';
 import Loader from './UI/loader'
 import NewCategory from './UpdateCart'
+
+
+const user = sessionStorage.getItem("user")
+const token = sessionStorage.getItem("token")
+const staff = sessionStorage.getItem("staff")
  
-class RegisterStaff extends Component{
+class NewProduct extends Component{
     state = {
         name: "",
         formError: null,
@@ -85,42 +90,47 @@ class RegisterStaff extends Component{
         this.setState({
             category: e.target.value,
             subcategories: []
-        }, ()=>{
-            if(this.state.category === '--select category--'){
+        },()=>{
+            if(this.state.category !== 'Add new category' && this.state.category !== '--select category--'){
+                this.fetchSubcategory()
+                this.labelPrintintHandler()
+            } else if (this.state.category === 'Add new category') {
+                console.log('seen')
+                this.setState({showCategory:true})
+            } else if(this.state.category === '--select category--'){
                 return null
-            }else if(this.state.category !== 'Add new category'){
-            this.setState({ selectedCategory:this.state.category }, () => {
+            }
+        })
+    }
+
+    fetchSubcategory = () => {
+        this.setState({ selectedCategory: this.state.category }, () => {
             // check the categories array for the selected id which is used to search for the sub category in the db  
-            const catToSearch = this.state.categories.filter(item=>{     //returns a single array with the selected category details
+            const catToSearch = this.state.categories.filter(item => {     //returns a single array with the selected category details
                 return item.category_name === this.state.category
             })
             const bearer = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MjcyNDI1NX0.4-88vjegT9bit4CXxJNXUKSaDe-XXVLIId-4iNOQA28`
             const url = `/api/category/${catToSearch[0].id}`     //get the category_id 
-                fetch(url,{                                     // fetch thte subcategory from the db using the category_id gotten earlier
-                    method: 'GET',
-                    withCredentials: true,
-                    credentials: 'include',
-                    headers: {
-                        'Authorization': bearer,
-                    }
-                }).then(res=>res.json())
-                .then(res=>{
+            fetch(url, {                                     // fetch thte subcategory from the db using the category_id gotten earlier
+                method: 'GET',
+                withCredentials: true,
+                credentials: 'include',
+                headers: {
+                    'Authorization': bearer,
+                }
+            }).then(res => res.json())
+                .then(res => {
                     const subcategories = res[0].subcategory
                     console.log(res)
                     console.log(subcategories)
-                    if(subcategories.length > 0){
-                        this.setState({ subcategories },()=>{
+                    if (subcategories.length > 0) {
+                        this.setState({ subcategories }, () => {
                             console.log(this.state.subcategories)
                         })
                     }
                 })
-                
-            })
-        } else if (this.state.category === 'Add new category') {
-            console.log('seen')
-            this.setState({showCategory:true})
-        }
-            })
+            
+        })
     }
 
    subcategoryOnChangeHandler = (e) => {
@@ -132,7 +142,8 @@ class RegisterStaff extends Component{
                 alert('Please select a category first')
             } else if (this.state.subcategory === 'Add new subcategory' && this.state.selectedCategory !== '') {
                 this.setState({showSubcategory:true})
-                
+            } else if (this.state.subCategory !== '--select subcategory--' || this.state.subcategory !== 'Add new subcategory') {
+                this.labelPrintintHandler();
             }
         })
     }
@@ -213,41 +224,8 @@ saveCategoryHandler = (e)=>{
             body: newData
         }).then(res=>{
             console.log(res)
-            this.setState({loader:false})
-            return res.json()
-        }).then(res=>{
-            console.log(res)
-        }).then(res=>{
-            console.log(res)
-            
-        const bearer = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MjcyNDI1NX0.4-88vjegT9bit4CXxJNXUKSaDe-XXVLIId-4iNOQA28`
-        fetch('/api/category',{         //fetches categories from the db so the user can select from already saved categories
-            method: 'GET',
-            withCredentials: true,
-            credentials: 'include',
-            headers: {
-                'Authorization': bearer,
-                // 'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            if (!res.ok && res.status !== 400) {
-            console.log (res)
-           throw Error(res.statusText)
-
-        } 
-          res.json().then(res => {
-              const categories = res.category
-              this.setState({categories})
-              categories.map(category => {
-                  this.setState({ category: category.category_name })  
-                  return category.id
-            })
-          })
-        }).catch(e=>{
-            console.log(e)
-            // const error = Object.value(e)
-            this.setState({error: e.message , showErr: true, initialLoader:false})
-        })
+            this.setState({ loader: false });
+            return this.fetchCategory();
         })
     }
 }
@@ -255,11 +233,16 @@ saveCategoryHandler = (e)=>{
     saveSubcategoryHandler = (e) => {
         e.preventDefault();
         console.log(this.state.subcategories)
-        this.state.subcategories.map(subCat=>{
-            console.log(subCat.name)
-            if (subCat.name === this.state.newSubcategory) {
+        let results = this.state.subcategories.filter(x => {
+            console.log(x)
+            return x.subcategory_name.toLowerCase().includes(this.state.newSubcategory)})
+        // this.state.subcategories.map(subCat=>{
+        //     console.log(subCat.name)
+                console.log(results)
+            if (results.length > 0) {
                 alert('this subcategory already exists')
-            } else if((this.state.newSubcategory !== '' && this.state.selectedCategory !== '') || subCat.name !== this.state.newSubcategory){       //checks if a category has been selected, and if subcategory is empty
+            } else if(this.state.newSubcategory !== '' && this.state.selectedCategory !== '' && results.length < 1){       //checks if a category has been selected, and if subcategory is empty
+            console.log(results)    
             const data = new FormData()
             let id = ''
             const url = '/api/subcategory'
@@ -277,52 +260,14 @@ saveCategoryHandler = (e)=>{
                 method: 'POST',
                 body: data
             }).then(res=>{
-                this.setState({loader:false})
+                this.setState({loader:false,showSubcategory:false})
                 console.log(res)
-                return res.json()
-            }).then(res => {
-                console.log(res)
-                
-                
-        const bearer = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MjcyNDI1NX0.4-88vjegT9bit4CXxJNXUKSaDe-XXVLIId-4iNOQA28`
-        fetch('/api/category/'+ id,{         //fetches subcategories from the db so the user can select from already saved ones
-            method: 'GET',
-            withCredentials: true,
-            credentials: 'include',
-            headers: {
-                'Authorization': bearer,
-                // 'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            if (!res.ok && res.status !== 400) {
-            console.log (res)
-           throw Error(res.statusText)
-
-        } 
-          res.json().then(res => {
-              console.log(res)
-              const subcategories = res.subcategory
-              console.log(res.subcategory)
-            //   this.setState({subcategories},()=>{
-            //   subcategories.map(subcategory => {
-            //       this.setState({ subcategory: subcategory.subcategory_name },()=>{
-            //           console.log(this.state.subcategories)
-            //           console.log(this.state.subcategory)
-            //       })
-            //       return subcategory.id
-            //   })
-            //   })
-          })
-        }).catch(e=>{
-            console.log(e)
-            // const error = Object.value(e)
-            this.setState({error: e.message , showErr: true, initialLoader:false})
-        })
+                return this.fetchSubcategory()
             })
             
         }
         
-    })
+    // })
 
     }
     
@@ -352,8 +297,11 @@ saveCategoryHandler = (e)=>{
     }
     
     componentWillMount(){
+        this.fetchCategory()
+    }
+
+    fetchCategory = () => {
         const bearer = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MjcyNDI1NX0.4-88vjegT9bit4CXxJNXUKSaDe-XXVLIId-4iNOQA28`
-        
         fetch('/api/category',{         //fetches categories from the db so the user can select from already saved categories
             method: 'GET',
             withCredentials: true,
@@ -383,59 +331,6 @@ saveCategoryHandler = (e)=>{
             // const error = Object.value(e)
             this.setState({error: e.message , showErr: true, initialLoader:false})
         })
-            // .then(res => {
-            //             console.log(this.state.category)
-            //         // get the caategory_id so we can get the sub category from the db
-            //             const catToSearch = this.state.categories.filter(item=>{        // creates an array from the categories array coantaining the category details
-            //                 return item['category_name'] === this.state.category
-            //             })
-            //             const url = `/api/subcategory/${catToSearch[0].id}`     //get the category_id 
-            //             fetch(url,{                                     // fetch the subcategory from the db using the category_id gotten earlier
-            //                 method: 'GET',
-            //                 withCredentials: true,
-            //                 credentials: 'include',
-            //                 headers: {
-            //                     'Authorization': bearer,
-            //                 }
-            //             }).then(res=>{
-            //                 res.json()
-            //             })
-            //             .then(res=>{
-            //                 // const subcategories = res.subcategory
-            //                 // console.log(subcategories)
-            //                 console.log(res)
-            //                 // if(Object.keys(subcategories).length > 0){
-            //                 //     // this.setState({ subcategories })
-            //                 // }
-            //             })
-            //             })
-       
-        // fetch('/api/subcategory',{         //fetch subcategories from the db so the user can select from already saved database
-        //     method: 'GET',
-        //     withCredentials: true,
-        //     credentials: 'include',
-        //     headers: {
-        //         'Authorization': bearer,
-        //         // 'Content-Type': 'application/json'
-        //     }
-        // }).then(res => {
-        //     this.setState({initialLoader:false})
-        //     if (!res.ok && res.status !== 400) {
-        //     console.log (res)
-        //    throw Error(res.statusText)
-
-        // } 
-        //     res.json().then(res => {
-        //         // console.log(res.products)
-        //         const subcategories = res.subcatgories
-        //         this.setState({subcategories, loader:false})
-        //     })
-        // }).catch(e=>{
-        //     console.log(e)
-        //     // const error = Object.value(e)
-        //     this.setState({error: e.message , showErr: true, loader:false})
-        // })
-
     }
 
     render() {
@@ -698,4 +593,4 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({setUser,setAccess,setStaff},dispatch)
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(RegisterStaff)
+export default connect(mapStateToProps,mapDispatchToProps)(NewProduct)

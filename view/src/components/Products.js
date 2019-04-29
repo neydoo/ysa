@@ -11,6 +11,7 @@ class Products extends Component{
 
     state = {
         products: [],
+        allProducts: [],
         cart: [],
         loader: true,
         error: null,
@@ -18,9 +19,14 @@ class Products extends Component{
         updateCartModal:false,
         qty: '',
         productToUpdate: 0,
+        searchValue: "",
     }
     
     componentWillMount() {
+       this.fetchProducts()
+    }
+    
+    fetchProducts = () => {
         const bearer = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MjcyNDI1NX0.4-88vjegT9bit4CXxJNXUKSaDe-XXVLIId-4iNOQA28`
         fetch('/api/product',{
             method: 'GET',
@@ -39,7 +45,7 @@ class Products extends Component{
             res.json().then(res => {
                 // console.log(res.products)
                 const products = res.products
-                this.setState({products, loader:false})
+                this.setState({products, loader:false, allProducts:products})
             })
         }).catch(e=>{
             console.log(e)
@@ -51,27 +57,27 @@ class Products extends Component{
         e.preventDefault()
         this.state.updateCartModal ? this.setState({updateCartModal:false}) : this.setState({updateCartModal:true})
 }
-addTocartHandler = (e,product) =>{
-    e.preventDefault()
-    this.setState({
-        updateCartModel:true,
-    })
-    if (this.props.cart.length > 0) {
-        // this.props.cart.map(cartItem => {
-            const ids = this.props.cart.map(item => item[1].id)
-            if (ids.includes(product.id)) { // checks if the product is already in the cart
-                this.setState({
-                    productToUpdate: product.id,
-                    updateCartModal: true,
-                })
-            }else if(this.props.cart.length > 0 && !ids.includes(product.id)){
-                this.props.AddToCart(product)
-            }
-            return null
-        // })
-    } else {
-        this.props.AddToCart(product)
-    }
+    addTocartHandler = (e,product) =>{
+        e.preventDefault()
+        this.setState({
+            updateCartModel:true,
+        })
+        if (this.props.cart.length > 0) {
+            // this.props.cart.map(cartItem => {
+                const ids = this.props.cart.map(item => item[1].id)
+                if (ids.includes(product.id)) { // checks if the product is already in the cart
+                    this.setState({
+                        productToUpdate: product.id,
+                        updateCartModal: true,
+                    })
+                }else if(this.props.cart.length > 0 && !ids.includes(product.id)){
+                    this.props.AddToCart(product)
+                }
+                return null
+            // })
+        } else {
+            this.props.AddToCart(product)
+        }
     }
     
 
@@ -93,80 +99,58 @@ addTocartHandler = (e,product) =>{
         this.setState({qty: ''})
     }
 
+    searchHandler = (e) => {
+        e.preventDefault();
+        this.setState({searchValue:e.target.value})
+        if (this.state.searchValue === "") {
+            return null
+        } else {
+            let results = this.state.allProducts.filter(x => {
+                return x.name.toLowerCase().includes(this.state.searchValue)});
+            this.setState({products:results})
+        }
+    }
     render() {
         return (
             <div>
                 {this.state.loader ? <Loader show={this.state.loader} /> :
                 <div>
                     {this.state.showErr ? 
-                            <p className="error">  <strong>Error!</strong> <br />
-                                Seems there was an error connecting to the server <br />
-                               {this.state.error}
-                            </p> :
-                            <div>
-                            <Search />
-            <div className="row">
-            <div className="col-sm-7 col-xs-5 col-md-9">
-                            <h4>Products</h4>
-                            {this.state.products.map(product => {
-                                return(
-                                <div key={product.id} onClick={(e)=>this.addTocartHandler(e, product)} className="col-xs-12 col-md-3 col-lg-2 col-sm-3 item">
-                                        <h3>{product.name}</h3>
-                                        <h5>&#x20a6;{product.sellingPrice}</h5>
-                            </div>)
-                            })}
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                </div>
-                <div className="col-xs-12 col-md-2 col-sm-3 item">
-                    <h6>Product Item</h6>
-                    {/* {console.log(this.props)} */}
-                    </div>
-                </div>
-                <div className="col-sm-5 col-xs-7 col-md-3">
-                                    <Cart />
-                                    <UpdateCart
-                                        shows={this.state.updateCartModal}
-                                        input={this.UpdateCartComponentInputHandler}
-                                        submit={this.UpdateCartComponentSubmitHandler}
-                                        clicked={this.modalHandler}
-                                        val={this.state.qty}
-                                    />
-                </div>
-                </div>
-                </div>}
-            </div>  }  
-                </div>
+                        <p className="error">  <strong>Error!</strong> <br />
+                            Seems there was an error connecting to the server <br />
+                            {this.state.error}
+                        </p> :
+                    <div>
+                                <Search
+                                    value={this.state.searchValue}
+                                    input={this.searchHandler}
+                                />
+                        <div className="row">
+                            <div className="col-sm-7 col-xs-5 col-md-9">
+                                <h4>Products</h4>
+                                {this.state.products.map(product => {
+                                    return(
+                                    <div key={product.id} onClick={(e)=>this.addTocartHandler(e, product)} className="col-xs-12 col-md-3 col-lg-2 col-sm-3 item">
+                                            <h3>{product.name}</h3>
+                                            <h5>&#x20a6;{product.sellingPrice}</h5>
+                                </div>)
+                                })}
+                        
+                            </div>
+                            <div className="col-sm-5 col-xs-7 col-md-3">
+                                <Cart />
+                                <UpdateCart
+                                    shows={this.state.updateCartModal}
+                                    input={this.UpdateCartComponentInputHandler}
+                                    submit={this.UpdateCartComponentSubmitHandler}
+                                    clicked={this.modalHandler}
+                                    val={this.state.qty}
+                                />
+                            </div>
+                        </div>
+                    </div>}
+                </div>  }  
+            </div>
         )
     }
 }
