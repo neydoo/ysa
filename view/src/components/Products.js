@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { updateCart, AddToCart } from '../action'
 import { bindActionCreators } from 'redux';
 import UpdateCart from './UpdateCart';
+import Navbar from './UI/Navbar';
 
 class Products extends Component{
 
@@ -25,7 +26,6 @@ class Products extends Component{
     componentWillMount() {
        this.fetchProducts()
     }
-    
     fetchProducts = () => {
         const bearer = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MjcyNDI1NX0.4-88vjegT9bit4CXxJNXUKSaDe-XXVLIId-4iNOQA28`
         fetch('/api/product',{
@@ -101,18 +101,21 @@ class Products extends Component{
 
     searchHandler = (e) => {
         e.preventDefault();
-        this.setState({searchValue:e.target.value})
-        if (this.state.searchValue === "") {
-            return null
-        } else {
-            let results = this.state.allProducts.filter(x => {
-                return x.name.toLowerCase().includes(this.state.searchValue)});
-            this.setState({products:results})
-        }
+        this.setState({ searchValue: e.target.value }, () => {
+            if (this.state.searchValue === "") {
+                this.setState({products:this.state.allProducts})
+            } else {
+                let results = this.state.allProducts.filter(x => {
+                    return x.name.toLowerCase().includes(this.state.searchValue)});
+                this.setState({products:results})
+            }
+        })
+        
     }
     render() {
         return (
             <div>
+                <Navbar />
                 {this.state.loader ? <Loader show={this.state.loader} /> :
                 <div>
                     {this.state.showErr ? 

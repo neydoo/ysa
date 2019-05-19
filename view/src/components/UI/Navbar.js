@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux'
 import './Navbar.css'
 
 class Navbar extends Component{
-    state={
-        logged:false,
+    shouldComponentUpdate(nextProps){
+        console.log(nextProps)
+        return nextProps.token !== this.props.token
     }
     render() {
         return (
@@ -16,10 +18,14 @@ class Navbar extends Component{
                         <Link to="/products"> Store</Link>
                     </div>
                 </div>
-                        
+
                 <div className="right-nav">
-                    {this.state.logged ?
-                            <Link to="#">Account<span className="caret-down"></span></Link> :
+                    {this.props.token ?
+                        <div>
+                            <Link to="#">Account<span className="caret-down"></span></Link>
+                            <Link to="/logout">Logout</Link>
+                        </div>
+                             :
                             <Link to="/login">Login</Link>
                     }
                 </div>
@@ -27,4 +33,11 @@ class Navbar extends Component{
         );
     }
 }
-export default Navbar;
+const mSTD = (state) =>{
+    return {
+        token: state.access
+    }
+}
+
+
+export default connect(mSTD,null)(Navbar);

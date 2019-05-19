@@ -17,7 +17,7 @@ class Cart extends Component{
         
         return (
             <div className="col-md-12 col-xs-12 col-sm-12 cart">
-                <h4>Cart <div style={{ height: '40px', display: 'inline', width: '40px', backgroundColor: 'yellowgreen', borderRadius: '50%' }}><em>{this.props.cart.length}</em></div>
+                <h4>Cart <div style={{ height: '40px', display: 'inline', width: '40px', backgroundColor: 'yellowgreen', borderRadius: '50%' }}><em style={{color:'red'}}>{this.props.cart.length}</em></div>
                 </h4>
                     <ol style={{display:'block'}}>
                     {this.props.cart.length >= 1 ? // checks if there are items on the cart before displaying the cart items

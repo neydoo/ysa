@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 // import axios from '../axios-request'
 import { connect } from "react-redux";
-import { setAccess } from "../action";
-import { setUser } from "../action";
-import { setStaff } from "../action";
+import { setAccess,setUser,setStaff } from "../action";
 import { bindActionCreators } from 'redux';
 import Datetime from 'react-datetime';
  
@@ -33,84 +31,11 @@ class RegisterStaff extends Component{
         userDetails:null
     }
 
-    passwordOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           password : e.target.value
-        })
-    }
-    
-    usernameOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           username : e.target.value
-        })
-    }
-    emailOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            email: e.target.value
-        })
-    }
-    dobOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            dob: e.target.value
-        })
-    }
-    nameOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           name : e.target.value
-        })
-    }
-    nokOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            nok: e.target.value
-        })
-    }
-    sooOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           soo : e.target.value
-        })
-    }
-    sexOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            sex: e.target.value
-        })
-    }
-    telOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            tel: e.target.value
-        })
-    }
-    roleOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            role: e.target.value
-        })
-    }
-    addressOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            address: e.target.value
-        })
-    }
-    relationshipOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           relationship : e.target.value
-        })
-    }
 
-    lgaOnChangeHandler = (e) => {
+    onChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
-           chosenlga : e.target.value
+           [e.target.name]: e.target.value
         })
     }
 
@@ -411,7 +336,7 @@ class RegisterStaff extends Component{
                         disabled: false,
                     })
                     // res status has been set to 409 to indicate there is probably another user with these details
-                    // shows the error on this case
+                    // shows the error in this case
                     if(res.status === 409){
                         res.json()
                             .then(err => {
@@ -465,7 +390,6 @@ class RegisterStaff extends Component{
 
 
     render() {
-        // let date = new Date()
         let maxYear = Datetime.moment().subtract( 16, 'year' );
         let defaultDate = Datetime.moment().subtract( 16, 'year' )
         let valid = function( current ){
@@ -480,39 +404,58 @@ class RegisterStaff extends Component{
                             <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Full Name</label>
-                                    <input required disabled={this.state.disabled} onChange={this.nameOnChangeHandler} type="text" placeholder="Full Name" name="fullName" value={this.state.name} />
+                                    <input required disabled={this.state.disabled} onChange={this.onChangeHandler} type="text" placeholder="Full Name" name="name" value={this.state.name} />
                                 </div>
+                            </div>
                                 
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <input required disabled={this.state.disabled} onChange={this.emailOnChangeHandler} type="text" placeholder="Email" name="email" value={this.state.email} />
+                                    <input required disabled={this.state.disabled} onChange={this.onChangeHandler} type="text" placeholder="Email" name="email" value={this.state.email} />
                                 </div>
+                            </div>
 
+                            <div className="col-sm-6">
+                                <div className="form-group">
+                                    <label>Username</label>
+                                    <input required disabled={this.state.disabled} onChange={this.onChangeHandler} type="text" placeholder="Username" name="username" value={this.state.username} />
+                                </div>
+                            </div>
+                            
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Phone Number</label>
-                                    <input required disabled={this.state.disabled} onChange={this.telOnChangeHandler} type="tel" placeholder="Phone Number" name="tel" value={this.state.tel} />
+                                    <input required disabled={this.state.disabled} onChange={this.onChangeHandler} type="number" placeholder="Phone Number" name="tel" value={this.state.tel} />
                                 </div>
+                            </div>
 
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Password</label>
-                                    <input required minLength='6' disabled={this.state.disabled} onChange={this.passwordOnChangeHandler} type="password" placeholder="Password" name="password" value={this.state.password} />
+                                    <input required minLength='6' disabled={this.state.disabled} onChange={this.onChangeHandler} type="password" placeholder="Password" name="password" value={this.state.password} />
                                 </div>
+                            </div>
 
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Repeat Password</label>
                                     <input disabled={this.state.disabled} onBlur={this.checkPasswords} type="password" placeholder="Repeat Password" name="repeatPassword" value={this.state.repeatPassword} />
                                     {this.state.passwordMatch ? null: <p className="error">Passwords do not match!!</p>}
                                 </div>
+                            </div>
 
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>State of Origin</label>
-                                    <select disabled={this.state.disabled} onChange={this.handleState} name="State">
+                                    <select disabled={this.state.disabled} onChange={this.handleState} name="soo">
                                     {this.states.map(element=>{
                                         return <option key={element} value={element}>{element}</option>
                                     })}
                                     </select>
                                 </div>
+                            </div>
                                 
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Local Government Area</label>
                                     <select disabled={this.state.disabled} onChange={this.lgaOnChangeHandler} name="LGA">
@@ -524,54 +467,56 @@ class RegisterStaff extends Component{
                             </div>
                                 
                             <div className="col-sm-6">
-
-                                <div className="form-group">
-                                    <label>Username</label>
-                                    <input required disabled={this.state.disabled} onChange={this.usernameOnChangeHandler} type="text" placeholder="Username" name="username" value={this.state.username} />
-                                </div>
-                            
                                 <div className="form-group">
                                     <label>Sex</label>
-                                    <select disabled={this.state.disabled} onChange={this.sexOnChangeHandler} id="sex" name="sex">
+                                    <select disabled={this.state.disabled} onChange={this.onChangeHandler} id="sex" name="sex">
                                         <option value="">...Select Sex...</option>
                                         <option value="Female">Female</option>
                                         <option value="Male">Male</option>
                                     </select>
                                 </div>
+                            </div>
                             
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Date of Birth</label>
-                                    
-                                    <Datetime timeFormat={false} isValidDate={valid} onChange={this.dobOnChangeHandler} defaultValue={defaultDate}   />
-                                    {/* <input required disabled={this.state.disabled} onChange={this.dobOnChangeHandler} type="date"  placeholder="Date of Birth" max='2019-13-13' id="datePickerId" name="date" value={this.state.dob} /> */}
+                                    <Datetime timeFormat={false} isValidDate={valid} defaultValue={defaultDate}   />
                                 </div>
+                            </div>
 
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Position</label>
-                                    <select disabled={this.state.disabled} onChange={this.roleOnChangeHandler} id="position" name="position">
+                                    <select disabled={this.state.disabled} onChange={this.onChangeHandler} id="position" name="position">
                                         <option value="">...Select Position...</option>
                                         <option value="Sales clerk">Sales clerk</option>
                                         <option value="Manager">Manager</option>
                                         <option value="Admin">Admin</option>
                                     </select>
                                 </div>
+                            </div>
 
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label> Residential Address</label>
-                                    <textarea required disabled={this.state.disabled} onChange={this.addressOnChangeHandler}  placeholder="Address" name="address" value={this.state.address} />
+                                    <textarea required disabled={this.state.disabled} onChange={this.onChangeHandler}  placeholder="Address" name="address" value={this.state.address} />
                                 </div>
+                            </div>
 
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Next of Kin</label>
-                                    <input required disabled={this.state.disabled} onChange={this.nokOnChangeHandler} type="text" placeholder="Next of Kin" name="nok" value={this.state.nok} />
+                                    <input required disabled={this.state.disabled} onChange={this.onChangeHandler} type="text" placeholder="Next of Kin" name="nok" value={this.state.nok} />
                                 </div>
+                            </div>
 
+                            <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Relationship</label>
-                                    <input required disabled={this.state.disabled} onChange={this.relationshipOnChangeHandler} type="text" placeholder="Relationship" name="nok" value={this.state.relationship} />
+                                    <input required disabled={this.state.disabled} onChange={this.onChangeHandler} type="text" placeholder="Relationship" name="relationship" value={this.state.relationship} />
                                 </div>
-
                             </div>
+
                         </div>
                         { !this.state.loader  ?
                         <div className="submit">

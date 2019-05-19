@@ -16,7 +16,7 @@ const UpdateCart = (props) => {
                                 <hr />
                                 <div className="form-group">
                                     <label>{props.label ||'Type in total quantity of product'}</label>
-                                    <input onChange={props.input} type={props.inputType || 'number'} required value={props.val} autoFocus />
+                                    <input onChange={props.input} name={props.name} type={props.inputType || 'number'} required value={props.val} autoFocus />
                                 </div>
                                 
                         <div className="submit">

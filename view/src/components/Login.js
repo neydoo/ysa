@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
+import { connect } from 'react-redux'
+import { setAccess } from '../action'
+import Navbar from './UI/Navbar.js';
+
+const tokens = sessionStorage.getItem("token")
 
 class Login extends Component{
     state = {
@@ -47,15 +52,19 @@ class Login extends Component{
                     const staff = res.user[0].staff
                     const user = res.user[0]
                     const token = res.token.token
-                    //trying to save to seession sha
+                    //save to seession 
+                    if (res.user[0].staff.role === 'admin') {
+                        sessionStorage.setItem("admin", true);
+                    }
                     sessionStorage.setItem("staff", JSON.stringify(staff));
                     sessionStorage.setItem("user", JSON.stringify(user));
                     sessionStorage.setItem("token", token);
                     console.log('storageUser',user)
                     console.log('storagToken',token)
                     console.log('storageStaff',staff)
-                    // redirects to products on succesful login
+                    // redirects to products on successful login
                     this.props.history.push('/products')
+                    this.props.setAccess(token)
                 })
             }
         }
@@ -67,6 +76,12 @@ class Login extends Component{
 
     }
 
+    componentDidMount(){
+        this.props.setAccess(tokens)
+        if (tokens){
+           return <Redirect to='/login' />
+        }
+    }
     usernameHandler = (e) => {
         e.preventDefault()
         this.setState({email: e.target.value})
@@ -79,7 +94,8 @@ class Login extends Component{
 
     render() {
         return (
-            <div>{this.state.showErr ? 
+            <div>
+                <Navbar /> {this.state.showErr ? 
                 <p className="error">  <strong>Error!</strong> <br />
                        {this.state.error}
                 </p>: null }
@@ -142,4 +158,4 @@ class Login extends Component{
     }
 }
 
-export default Login
+export default connect(null,{setAccess})(Login)

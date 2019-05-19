@@ -5,6 +5,7 @@ import { setAccess,setUser,setStaff } from "../action";
 import Datetime from 'react-datetime';
 import Loader from './UI/loader'
 import NewCategory from './UpdateCart'
+import Navbar from './UI/Navbar.js';
 
 
 const user = sessionStorage.getItem("user")
@@ -41,44 +42,10 @@ class NewProduct extends Component{
         subcategories: [],
     }
 
-   nameOnChangeHandler = (e) => {
+   onChangeHandler = (e) => {
         e.preventDefault();
         this.setState({
-            name : e.target.value
-        },()=>{
-            this.labelPrintintHandler()
-        })
-    }
-    barcodeOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           barcode : e.target.value
-        })
-    }
-   cpOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           cp : e.target.value
-        })
-    }
-   spOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           sp : e.target.value
-        })
-    }
-   descOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            description : e.target.value
-        },()=>{
-            this.labelPrintintHandler()
-        })
-    }
-   otherDescOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            otherDesc : e.target.value
+            [e.target.name] : e.target.value
         },()=>{
             this.labelPrintintHandler()
         })
@@ -105,6 +72,7 @@ class NewProduct extends Component{
 
     fetchSubcategory = () => {
         this.setState({ selectedCategory: this.state.category }, () => {
+            
             // check the categories array for the selected id which is used to search for the sub category in the db  
             const catToSearch = this.state.categories.filter(item => {     //returns a single array with the selected category details
                 return item.category_name === this.state.category
@@ -147,57 +115,21 @@ class NewProduct extends Component{
             }
         })
     }
-   variantOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           variant : e.target.value
-        })
-    }
-   qtyOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           qty : e.target.value
-        })
-    }
-   expDateOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           expDate : e.target.value
-        })
-    }
-   batchOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           batch : e.target.value
-        })
-    }
    labelOnChangeHandler = (e) => {
         e.preventDefault();
         this.setState({label:e.target.value})
     }
-   newCategoryOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           newCategory : e.target.value
-        })
-       }
-       
+  
     categoryModalHandler = (e) => {
         e.preventDefault()
         this.state.showCategory ? this.setState({showCategory:false}) : this.setState({showCategory:true})
-}
- 
-   newSubcategoryOnChangeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-           newSubcategory : e.target.value
-        })
-    }  
+    }
+  
     
     subCategoryModalHandler = (e) => {
         e.preventDefault()
         this.state.showSubcategory ? this.setState({showSubcategory:false}) : this.setState({showSubcategory:true})
-}
+    }
 
     labelPrintintHandler = () =>{
         const label = `${this.state.name} ${this.state.category} ${this.state.subcategory} ${this.state.description}`
@@ -236,8 +168,6 @@ saveCategoryHandler = (e)=>{
         let results = this.state.subcategories.filter(x => {
             console.log(x)
             return x.subcategory_name.toLowerCase().includes(this.state.newSubcategory)})
-        // this.state.subcategories.map(subCat=>{
-        //     console.log(subCat.name)
                 console.log(results)
             if (results.length > 0) {
                 alert('this subcategory already exists')
@@ -264,11 +194,7 @@ saveCategoryHandler = (e)=>{
                 console.log(res)
                 return this.fetchSubcategory()
             })
-            
         }
-        
-    // })
-
     }
     
     onSubmitHandler = (e) => {
@@ -348,6 +274,7 @@ saveCategoryHandler = (e)=>{
         let label = `${this.state.name} ${category} ${subcategory} ${this.state.description}`
         return (
             <div>
+                <Navbar />
                 { this.state.initialLoader ? <Loader show={this.state.initialLoader} /> : 
                 <div>{this.state.showErr ? 
                     <p className="error">  <strong>Error!</strong> <br />
@@ -362,131 +289,74 @@ saveCategoryHandler = (e)=>{
                             <div className="col-sm-6">
                                 <div className="form-group">
                                     <label>Barcode</label>
-                                    <input required className="form-control" disabled={this.state.disabled} onChange={this.barcodeOnChangeHandler} type="text" placeholder="Barcode" value={this.state.barcode} />
+                                    <input required className="form-control" disabled={this.state.disabled} onChange={this.onChangeHandler} type="text" placeholder="Barcode" value={this.state.barcode} name="barcode" />
                                 </div>
                                 </div>
 
-                                {console.log(this.state.name + " " + this.state.category + " " + this.state.description)}
                             <div className="col-sm-6">
                                 <div className="form-group">
-                                    <label>Product Name</label>
-                                    <input required className="form-control" disabled={this.state.disabled} onChange={ this.nameOnChangeHandler} type="text" placeholder="Product Name" value={this.state.name} />
+                                    <label>Manufacturer</label>
+                                    <input required className="form-control" disabled={this.state.disabled} onChange={ this.onChangeHandler} type="text" placeholder="Manufacturer" value={this.state.name} name="name" />
                                 </div>
                                 </div>
 
-                                {/* <div className="col-sm-12"> */}
-                                    <div className="col-sm-6">
-                                         <div className="form-group category-div">
-                                            <label>Category</label>
-                                    <select disabled={this.state.disabled} onChange={ this.categoryOnChangeHandler}>
-                                                <option>--select category--</option>
-                                        {this.state.categories.map(category => {
-                                            return(
-                                                <option key={category.id}>{category.category_name}</option>
-                                            )
-                                        })}
-                                       { console.log(this.state.subcategories)}
-                                                    <option>Add new category</option>
-                                                </select>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="col-sm-6">
+                                <div className="col-sm-6">
                                         <div className="form-group category-div">
-                                            <label>Sub category</label>
-                                                <select   disabled={this.state.disabled} onChange={this.subcategoryOnChangeHandler} >
-                                                <option>--select subcategory--</option>
-                                                    {this.state.subcategories.map(subcategory => {
-                                                        return(
-                                                            <option key={subcategory.id}>{subcategory.subcategory_name}</option>
-                                                        )
-                                                    })}
-                                                    <option>Add new subcategory</option>
-                                                </select>
-                                        </div>
+                                        <label>Category</label>
+                                <select disabled={this.state.disabled} onChange={ this.categoryOnChangeHandler} name="category">
+                                            <option>--select category--</option>
+                                    {this.state.categories.map(category => {
+                                        return(
+                                            <option key={category.id}>{category.category_name}</option>
+                                        )
+                                    })}
+                                                <option>Add new category</option>
+                                            </select>
                                     </div>
-                                    
-                                    <div className="col-sm-6">
-                                        <div className="form-group">
-                                            <label>Description</label>
-                                            <input required disabled={this.state.disabled} onChange={ this.descOnChangeHandler} type="text" placeholder="Description" value={this.state.description} />
-                                        </div>
-                                    </div>
+                                </div>
 
-                                    <div className="col-sm-6">
-                                        <div className="form-group">
-                                            <label>Other Description</label>
-                                            <input className="form-control" disabled={this.state.disabled} onChange={ this.otherDescOnChangeHandler} type="text" placeholder="Other Desc" value={this.state.otherDescription} />
-                                        </div>
+
+                                <div className="col-sm-6">
+                                    <div className="form-group category-div">
+                                        <label>Sub category</label>
+                                            <select   disabled={this.state.disabled} onChange={this.subcategoryOnChangeHandler} name="subcategory" >
+                                            <option>--select subcategory--</option>
+                                                {this.state.subcategories.map(subcategory => {
+                                                    return(
+                                                        <option key={subcategory.id}>{subcategory.subcategory_name}</option>
+                                                    )
+                                                })}
+                                                <option>Add new subcategory</option>
+                                            </select>
                                     </div>
-                            {/* {this.state.category === 'Add new category' ?
-                                    <div className="col-sm-6">
-                                        <div className="form-group">
-                                            <label>Add New Category </label>
-                                            <input type="text" className="form-control" onChange={ this.newCategoryOnChangeHandler} required disabled={this.state.disabled} value={this.state.newCategory}  />
-                                        </div>
-                                        </div>: null
-}
-                                    {this.state.subcategory === 'Add new subcategory' ?
-                                    <div className="col-sm-6">
-                                        <div className="form-group">
-                                            <label>Add New sub-category </label>
-                                            <input type="text" className="form-control" onChange={ this.newSubcategoryOnChangeHandler} disabled={this.state.disabled} value={this.state.newSubcategory}  />
-                                        </div>
-                                    </div> 
-                                   : null } */}
-                                    <div className="col-sm-6">
-                                        <div className="form-group">
-                                            <label>Variants</label>
-                                            <input required className="form-control" disabled={this.state.disabled} onChange={ this.variantOnChangeHandler} type="text" placeholder="Variant" value={this.state.variant} />
-                                        </div>
-                            </div>
-                                    <div className="col-sm-6">
-                                        <div className="form-group">
-                                            <label>Label Print</label>
-                                            <input required className="form-control" disabled={this.state.disabled} onChange={this.labelOnChangeHandler} type="text" value={this.state.label} />
-                                        </div>
-                            </div>
-                            
-                                <div className="col-sm-12">
-                                    <div className="col-sm-6">
-                                    <div className="form-group">
-                                        
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-6">
-                                    <div className="form-group">
-                                        
-                                        </div>
-                                    </div>
-                            </div>
-                                <div className="col-sm-12">
-                                    <div className="col-sm-6">
-                                    <div className="form-group">
-                                        
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-6">
-                                    <div className="form-group">
-                                        
-                                        </div>
-                                    </div>
-                            </div>
-                                <div className="col-sm-12">
-                                    <div className="col-sm-6">
-                                    <div className="form-group">
-                                        
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-6">
-                                    <div className="form-group">
-                                        
-                                        </div>
-                                    </div>
-                            </div>
-                            
+                                </div>
                                 
+                                <div className="col-sm-6">
+                                    <div className="form-group">
+                                        <label>Description</label>
+                                        <input required disabled={this.state.disabled} onChange={ this.onChangeHandler} type="text" placeholder="Description" value={this.state.description} name="description" />
+                                    </div>
+                                </div>
+
+                                <div className="col-sm-6">
+                                    <div className="form-group">
+                                        <label>Other Description</label>
+                                        <input className="form-control" disabled={this.state.disabled} onChange={ this.onChangeHandler} type="text" placeholder="Other Desc" value={this.state.otherDescription} name="otherDescription" />
+                                    </div>
+                                </div>
+
+                                <div className="col-sm-6">
+                                    <div className="form-group">
+                                        <label>Variants</label>
+                                        <input required className="form-control" disabled={this.state.disabled} onChange={ this.onChangeHandler} type="text" placeholder="Variant" value={this.state.variant} name="variant" />
+                                    </div>
+                                </div>
+                                <div className="col-sm-6">
+                                    <div className="form-group">
+                                        <label>Label Print</label>
+                                        <input required className="form-control" disabled={this.state.disabled} onChange={this.onChangeHandler} type="text" value={this.state.label} name="label" />
+                                    </div>
+                                </div>
 
                             <div className="col-md-12">
                                     <div className="col-md-2 col-xs-12 col-lg-2 col-sm-2">
@@ -509,21 +379,21 @@ saveCategoryHandler = (e)=>{
                                     <div className="col-md-2 col-xs-12 col-lg-2 col-sm-2">
                                         <div className="form-group">
                                             <label>Cost Price</label>
-                                            <input required className="form-control" disabled={this.state.disabled} onChange={this.cpOnChangeHandler} type="number" placeholder="Cost Price" value={this.state.cp} />
+                                            <input required className="form-control" disabled={this.state.disabled} onChange={this.onChangeHandler} type="number" placeholder="Cost Price" value={this.state.cp} name="cp" />
                                         </div>
                                     </div>
 
                                     <div className="col-md-2 col-xs-12 col-lg-2 col-sm-2">
                                         <div className="form-group">
                                             <label>Selling Price</label>
-                                            <input required className="form-control" disabled={this.state.disabled} onChange={this.spOnChangeHandler} type="number" placeholder="Selling Price" value={this.state.sp} />
+                                            <input required className="form-control" disabled={this.state.disabled} onChange={this.onChangeHandler} type="number" placeholder="Selling Price" value={this.state.sp} name="sp" />
                                         </div>
                                     </div>
 
                                     <div className="col-md-2 col-xs-12 col-lg-2 col-sm-2">
                                         <div className="form-group">
                                             <label>Qty</label>
-                                            <input required className="form-control" disabled={this.state.disabled} onChange={this.qtyOnChangeHandler} type="number" placeholder="Qty"  value={this.state.qty} />
+                                            <input required className="form-control" disabled={this.state.disabled} onChange={this.onChangeHandler} type="number" placeholder="Qty"  value={this.state.qty} name="qty" />
                                         </div>
                                     </div>
 
@@ -555,10 +425,11 @@ saveCategoryHandler = (e)=>{
                                 label='Type in new category'
                                 shows={this.state.showCategory}
                                 val={this.state.newCategory}
-                                input={this.newCategoryOnChangeHandler}
+                                input={this.onChangeHandler}
                                 clicked={this.categoryModalHandler}
                                 submit={this.saveCategoryHandler}
                                 submitButton='Save'
+                                name='newCategory'
 
                             /> 
                         <NewCategory 
@@ -568,9 +439,10 @@ saveCategoryHandler = (e)=>{
                                 inputType='text'
                                 val={this.state.newSubcategory}
                                 shows={this.state.showSubcategory}
-                                input={this.newSubcategoryOnChangeHandler}
+                                input={this.onChangeHandler}
                                 submit={this.saveSubcategoryHandler}
                                 submitButton='Save'
+                                name="newSubcategory"
                         /> 
                                 </div>
                     }
